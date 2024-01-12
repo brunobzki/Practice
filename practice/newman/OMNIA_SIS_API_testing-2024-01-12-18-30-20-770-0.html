@@ -1,0 +1,2887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Newman Summary Report</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/styles/default.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
+
+
+<style>
+code.renderMarkdown table, code.renderMarkdown th, code.renderMarkdown td {
+    border: 1px solid black;
+    width: max-content;
+    padding: .75rem;
+}
+
+.theme-dark {
+    --background-color: #222;
+    --bg-card-deck: #444444;
+    --text-color: #ccd2d8;
+    --tab-border: solid 1px #444;
+    --success: #3c9372;
+    --failure: #c24a3f;
+    --warning: #d28c23;
+    --info: #4083b6;
+    --badge-outline: #3c9372;
+    --badge-bg: #cdd3db;
+    --badge-text: #ccd2d9;
+    --failure-row: #c24a3f;
+    --warning-row: #d28c23;
+    --card-bg: #444;
+    --card-footer: #4f5758;
+    --form-input: #ececb5;
+    --hov-text: #d2dae5;
+    --h4-text: #ccd1d9;
+}
+
+.theme-light {
+    --tab-border: solid 1px #fff;
+    --text-color: #000000;
+    --success: #42a745;
+    --failure: #dc3544;
+    --warning: #f4c10b;
+    --info: #49a1b8;
+    --badge-outline: #040411;
+    --badge-bg: #f8f9fa;
+    --badge-text: #fff;
+    --failure-row: #f5c6cb;
+    --warning-row: #ffeeba;
+    --card-bg: #f7f7f7;
+    --hov-text: #fff;
+    --h4-text: #ffffff;
+}
+
+body {
+  padding-top:30px;
+  background-color: var(--background-color)!important;
+  color: var(--text-color);
+}
+
+#execution-data {
+  padding: 10px;
+  border: var(--tab-border);
+  border-top: none;
+}
+
+.nav-tabs {
+  padding-top: 10px;
+  height: 105px;
+  overflow-y: auto;
+}
+
+body.theme-dark .card-header {
+    background-color: #444;
+}
+
+body.theme-light .card-header {
+    background-color: #f7f7f7;
+}
+
+.card-footer {
+    padding: .75rem 1.25rem;
+    background-color: var(--card-footer);
+}
+
+.card-deck {
+    background-color: var(--bg-card-deck)!important;
+}
+.form-control {
+    background: var(--form-input);
+}
+
+.custom-tab {
+  padding: 10px 15px;
+  margin-right: 0px;
+  height: 47px;
+  width: 69px;
+  text-align: center;
+  border: var(--tab-border);
+  border-bottom: none;
+  cursor:pointer;
+}
+
+body.theme-dark .text-white {
+    color: #ccd2d9!important;
+}
+h4 {
+    color: var(--h4-text);
+}
+
+body.theme-dark h1 {
+    color: #ccd2da;
+}
+
+body.theme-dark .bg-light>td {
+    background: #4f5858!important;
+}
+
+body.theme-dark .hljs {
+    background: #0a0a0ab0!important;
+    color: #8d8787!important;
+}
+
+.bg-info {
+    background-color: var(--info)!important;
+}
+.bg-success {
+    background-color: var(--success)!important;
+}
+
+.alert-success {
+    background-color: var(--success)!important;
+}
+
+.alert-warning {
+    background-color: var(--warning)!important;
+    border-color: var(--warning)!important;
+}
+
+.alert-info {
+    background-color: var(--info)!important;
+}
+
+.bg-warning {
+    background-color: var(--warning)!important;
+}
+
+.badge-warning {
+    color: var(--badge-text)!important;
+    background-color: var(--warning)!important;
+}
+
+.table-warning>td {
+    background-color: var(--warning-row);
+}
+
+.alert-danger {
+    background-color: var(--failure)!important;
+}
+
+body.theme-dark .alert-dark {
+    background-color: #636467!important;
+    color: #ccd2d8;
+}
+
+body.theme-dark .text-dark {
+    color: #d1dae4!important;
+}
+
+body.theme-dark .badge-light {
+    color: #212529;
+    background-color: #cdd3db;
+}
+
+body.theme-light .badge-light {
+    color: #212529;
+    background-color: #f8f9fa;
+}
+body.theme-light .bg-danger {
+    background-color: var(--failure)!important;
+}
+
+body.theme-dark .bg-danger {
+    background-color: var(--failure)!important;
+}
+
+.table-danger>td {
+    background-color: var(--failure-row);
+}
+
+body.theme-dark .table .thead-light th {
+    background-color: #4f5858!important;
+    border-color: #dee2e6!important;
+    color: #ccd2d8!important;
+}
+
+.itPassed {
+  background: var(--success);
+  color: white;
+}
+.itFailed {
+  background: var(--failure);
+  color: white;
+}
+
+.resultsInfoPass {
+  color: var(--success);
+  padding-top: 4px;
+}
+
+.resultsInfoFail {
+  color: var(--failure);
+  padding-top: 4px;
+}
+
+.badge-outline-success {
+  color: var(--success);
+  border: 1px solid var(--success);
+  background-color: transparent;
+}
+
+.badge-outline {
+  color: var(--badge-outline);
+  border: 1px solid var(--badge-outline);
+  background-color: transparent;
+}
+
+.btn-outline-success {
+    color: var(--success)!important;
+    border-color: var(--success)!important;
+}
+
+.backToTop:hover {
+  background-color: var(--success);
+  border-color: var(--success);
+  color: var(--hov-text)!important;
+}
+
+.btn-outline-success:hover {
+  background-color: var(--success);
+  border-color: var(--success);
+  color: var(--hov-text)!important;
+}
+
+.btn-outline-secondary {
+  background-color: var(--success)!important;
+  color: var(--hov-text)!important;
+}
+
+body.theme-dark .env-heading {
+    color: #ccd2d9!important;
+}
+
+body, html {
+  height:100%;
+}
+
+.card {
+  overflow:hidden;
+}
+
+body.theme-dark .card-body {
+    background-color: #444;
+}
+
+body.theme-light .card-body {
+    background-color: #f7f7f7;
+}
+
+body.theme-dark .card-body .bg-danger {
+    background-color: var(--failure)!important;
+}
+
+body.theme-light .card-body .bg-danger {
+    background-color: var(--failure)!important;
+}
+
+.card-body .rotate {
+  z-index: 8;
+  float: right;
+  height: 100%;
+}
+
+.card-body .rotate i {
+  color: #14141426;
+  position: absolute;
+  left: 0;
+  left: auto;
+  right: -10px;
+  bottom: 0;
+  display: block;
+  -webkit-transform: rotate(-44deg);
+  -moz-transform: rotate(-44deg);
+  -o-transform: rotate(-44deg);
+  -ms-transform: rotate(-44deg);
+  transform: rotate(-44deg);
+}
+
+.dyn-height {
+  max-height:350px;
+  overflow-y:auto;
+}
+
+.nav-pills .nav-link.active {
+  background-color: transparent!important;
+}
+
+.backToTop {
+  display: none;
+  position: fixed;
+  bottom: 10px;
+  right: 20px;
+  z-index: 99;
+  font-size: 15px;
+  outline: none;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 4px;
+}
+
+.card-header .fa {
+  transition: .3s transform ease-in-out;
+}
+.card-header .collapsed .fa {
+  transform: rotate(90deg);
+}
+
+.single-line-tabs {
+  padding-top: 10px;
+  height: 60px;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 20px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  bottom: 4px;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  box-shadow: 0 0px 15px #2020203d;
+  background: white;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+input:checked + .slider {
+  background-color: #4083b6;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #4083b6;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(24px);
+  -ms-transform: translateX(24px);
+  transform: translateX(24px);
+  background: white;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+table.dataTable td, table.dataTable tr {
+    vertical-align: middle;
+} 
+
+body.theme-dark code {
+    color: #ccd2d8!important;
+} 
+
+body.theme-light code {
+    color: #000000!important;
+} 
+
+.text-wrap {
+    word-wrap: break-word; 
+    min-width: 600px; 
+    max-width: 600px; 
+    white-space: normal;
+}
+
+</style>
+</head>
+<body>
+  <div class="container">
+        <div class="container">
+            <label>Light</label>
+            <label id="switch" class="switch">
+                <input type="checkbox" onchange="toggleTheme()" id="slider">
+                <span class="slider round"></span>
+            </label>
+            <label>Dark</label>
+        </div>
+        <div class="card">
+        <div class="card-header">
+            <ul class="nav nav-pills mb-3 nav-justified" id="pills-tab" role="tablist">
+            <li class="nav-item bg-info active" data-toggle="tooltip" title="Click to view the Summary">
+                <a class="nav-link text-white" id="pills-summary-tab" data-toggle="pill" href="#pills-summary" role="tab" aria-controls="pills-summary" aria-selected="true">Summary</a>
+            </li>
+            <li class="nav-item bg-success" data-toggle="tooltip" title="Click to view the Requests">
+                <a class="nav-link text-white" id="pills-requests-tab" data-toggle="pill" href="#pills-requests" role="tab" aria-controls="pills-requests" aria-selected="false">Total Requests <span class="badge badge-light">57</span></a>
+            </li>
+            <li class="nav-item bg-danger" data-toggle="tooltip" title="Click to view the Failed Tests">
+                <a class="nav-link text-white" id="pills-failed-tab" data-toggle="pill" href="#pills-failed" role="tab" aria-controls="pills-failed" aria-selected="false">Failed Tests <span class="badge badge-light">1</span></a>
+            </li>
+            <li class="nav-item bg-warning" data-toggle="tooltip" title="Click to view the Skipped Tests">
+                <a class="nav-link text-white" id="pills-skipped-tab" data-toggle="pill" href="#pills-skipped" role="tab" aria-controls="pills-skipped" aria-selected="false">Skipped Tests <span class="badge badge-light">0</span></a>
+            </li>
+            </ul>
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-summary" role="tabcard" aria-labelledby="pills-summary-tab"> 
+<div class="row">
+  <div class="col-md-9 col-lg-12 main">
+   <h1 class="display-2 text-center">Newman Run Dashboard</h1>
+   <h5 class="text-center">Friday, 12 January 2024 15:30:20</h5>
+   <div class="row">
+    <div class="col-lg-3 col-md-6">
+     <div class="card text-white card-success">
+      <div class="card-body bg-danger">
+       <div class="rotate">
+        <i class="fa fa-retweet fa-5x"></i>
+       </div>
+       <h6 class="text-uppercase">Total Iterations</h6>
+       <h1 class="display-1">1</h1>
+      </div>
+     </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+     <div class="card text-white card-danger">
+      <div class="card-body bg-success">
+       <div class="rotate">
+        <i class="fa fa-list fa-4x"></i>
+       </div>
+       <h6 class="text-uppercase">Total Assertions</h6>
+       <h1 class="display-1">138</h1>
+      </div>
+     </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+     <div class="card text-white card-info">
+      <div class="card-body bg-danger">
+       <div class="rotate">
+        <i class="fa fa-plus-circle fa-5x"></i>
+       </div>
+       <h6 class="text-uppercase">Total Failed Tests</h6>
+       <h1 class="display-1">1</h1>
+      </div>
+     </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+     <div class="card text-white card-warning">
+      <div class="card-body bg-success">
+       <div class="rotate">
+        <i class="fa fa-share fa-5x"></i>
+       </div>
+       <h6 class="text-uppercase">Total Skipped Tests</h6>
+       <h1 class="display-1">0</h1>
+      </div>
+     </div>
+    </div>
+   </div>
+   <hr>
+    <div class="row">
+    <div class="col">
+        <div class="row">
+        <div class="col-sm-12 mb-3">
+            <div class="card border-info">
+                <div class="card-body">
+                <h5 class="card-title text-uppercase text-white text-center bg-info">File Information</h5>
+                <span><i class="fas fa-file-code"></i></span><strong> Collection:</strong> OMNIA_SIS_API_testing<br>
+                <span><i class="fas fa-folder"></i></span><strong> Specified Folders:</strong> Authentication,NFL<br>
+                <span><i class="fas fa-file-code"></i></span><strong> Environment:</strong> PROD<br>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="row">
+        <div class="col-sm-12 mb-3">
+            <div class="card border-info">
+                <div class="card-body">
+                <h5 class="card-title text-uppercase text-white text-center bg-info">Timings and Data</h5>
+                <span><i class="fas fa-stopwatch"></i></span><strong> Total run duration:</strong> 3m 31.1s<br>
+                <span><i class="fas fa-database"></i></span><strong> Total data received:</strong> 10.58MB<br>
+                <span><i class="fas fa-stopwatch"></i></span><strong> Average response time:</strong> 3.1s<br>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="row">
+        <div class="col-sm-12 mb-3">
+            <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-inverse">
+                    <tr class="text-center">
+                        <th class="text-uppercase">Summary Item</th>
+                        <th class="text-uppercase">Total</th>
+                        <th class="text-uppercase">Failed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Requests</td>
+                        <td class="text-center">57</td>
+                        <td class="text-center">0</td>
+                    </tr>
+                    <tr>
+                        <td>Prerequest Scripts</td>
+                        <td class="text-center">88</td>
+                        <td class="text-center">0</td>
+                    </tr>
+                    <tr>
+                        <td>Test Scripts</td>
+                        <td class="text-center">88</td>
+                        <td class="text-center">0</td>
+                    </tr>
+                    <tr class="table-danger">
+                        <td>Assertions</td>
+                        <td class="text-center">138</td>
+                        <td class="text-center">1</td>
+                    </tr>
+                    <tr class="">
+                        <td>Skipped Tests</td>
+                        <td class="text-center">0</td>
+                        <td class="text-center">-</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+        </div>
+    <hr>
+   </div>
+   </div>
+  </div>
+ </div>
+        </div>
+            <div class="tab-pane fade" id="pills-failed" role="tabcard" aria-labelledby="pills-failed-tab">
+                <button id="topOfFailuresScreen" class="btn btn-outline-success btn-sm backToTop" onclick="topFunction()">Go To Top</button>
+                    <div class="btn-group float-right" role="group" aria-label="Button Group">
+                        <button id="openAllFailed" class="btn btn-outline-success btn-sm float-right" style="text-align: center; width: 185px;">Expand All Failed Tests</button>
+                    </div>
+                    <br>
+                    <br>
+                    
+                    <div class="alert alert-danger text-uppercase text-center">
+                        <h4>Showing 1 Failure</h4>
+                    </div>
+                    <div class="col-sm-12 mb-3">
+                    <div class="card-deck">
+                        <div class="card border-danger">
+                            <div class="card-header bg-danger">
+                                <a data-toggle="collapse" href="#" data-target="#fails-collapse-fa688e79-d2ae-4b3e-81ef-1e19dbf2d7ef" aria-expanded="false" aria-controls="collapse" id="fails-fa688e79-d2ae-4b3e-81ef-1e19dbf2d7ef" class="collapsed text-white z-block">
+                                    Iteration 1 - AssertionError - Player - Player RB <i class="float-lg-right fa fa-chevron-down"></i>
+                                </a>
+                            </div>
+                            <div id="fails-collapse-fa688e79-d2ae-4b3e-81ef-1e19dbf2d7ef" class="collapse" aria-labelledby="fails-fa688e79-d2ae-4b3e-81ef-1e19dbf2d7ef">
+                            <div class="card-body">
+                                <h5 ><strong>Failed Test:</strong> Correct request</h5>
+                            <hr>
+                            <h5 class="card-title text-uppercase text-white text-center bg-danger">Assertion Error Message</h5>
+                            <div>
+                                <pre><code >expected 400 to not deeply equal 400</code></pre>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+            </div>
+
+            <div class="tab-pane fade" id="pills-skipped" role="tabcard" aria-labelledby="pills-skipped-tab">
+                <button id="topOfSkippedScreen" class="btn btn-outline-success btn-sm backToTop" onclick="topFunction()">Go To Top</button>
+                <div class="alert alert-success text-uppercase text-center">
+                    <br><br><h1 class="text-center">There are no skipped tests <span><i class="far fa-thumbs-up"></i></span></h1><br><br>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="pills-requests" role="tabcard" aria-labelledby="pills-requests-tab">
+            
+            <button id="topOfRequestsScreen" class="btn btn-outline-success btn-sm backToTop" onclick="topFunction()">Go To Top</button>
+
+            <div class="btn-group float-right" role="group" aria-label="Button Group">
+                <button id="openAllRequests" class="btn btn-outline-success btn-sm float-right" style="text-align: center; width: 140px;">Expand Requests</button>
+            </div>
+
+    <div class="text-uppercase" id="execution-menu">
+        <h5>1 Iteration available to view</h5>
+        
+        <ul class="nav single-line-tabs" id="iterationList">
+        </ul>
+    </div>
+    <h6 class="text-uppercase text-muted" id="iterationSelected" style="padding-top: 10px;"></h6>
+	<div class="tab-content" id="execution-data">
+        <div class="alert alert-dark text-uppercase text-center iteration-0">
+            Authentication - 1 Request in the folder
+        </div>
+        <div class="alert alert-dark text-uppercase text-center iteration-0">
+            NFL / Films / Teams - 4 Requests in the folder
+        </div>
+        <div class="alert alert-dark text-uppercase text-center iteration-0">
+            NFL / Filters - 26 Requests in the folder
+        </div>
+        <div class="alert alert-dark text-uppercase text-center iteration-0">
+            NFL / Player - 13 Requests in the folder
+        </div>
+            <div class="card-deck iteration-0">
+            <div class="row iteration-0">
+                <div class="col-sm-12 mb-3 iteration-0">
+                <div class="card iteration-0">
+                    <div class="card-header  bg-danger iteration-0">
+                        <a data-toggle="collapse" href="#" data-target="#collapse-504de2e7-17ce-45a7-8f1e-6e03beef5a81" aria-expanded="false" aria-controls="collapse" id="requests-504de2e7-17ce-45a7-8f1e-6e03beef5a81" class="collapsed text-white z-block">
+                    Iteration: 1 - Player RB <i class="float-lg-right fa fa-chevron-down" style="padding-top: 5px;"></i>
+                </a>
+                    </div>
+                    <div id="collapse-504de2e7-17ce-45a7-8f1e-6e03beef5a81" class="collapse" aria-labelledby="requests-504de2e7-17ce-45a7-8f1e-6e03beef5a81">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request Method:</strong> <span class="badge-outline-success badge badge-success"> POST</span><br>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request URL:</strong> <a href="https://api.sportsinfosolutions.com/v1/omnia/nfl/films" target="_blank">https://api.sportsinfosolutions.com/v1/omnia/nfl/films</a><br>
+                                    </div>
+                                </div>
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Response Code:</strong> <span class="float-right badge-outline badge badge-success"> 200 - OK</span><br>
+                                    <span><i class="fas fa-stopwatch"></i></span><strong> Mean time per request:</strong> <span class="float-right badge-outline badge badge-success"> 242ms</span><br>
+                                    <span><i class="fas fa-database"></i></span><strong> Mean size per request:</strong> <span class="float-right badge-outline badge badge-success"> 96B</span><br>
+                                    <hr>
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Test Pass Percentage</h5>
+                                    <div>
+                                        <div class="progress" style="height: 40px;">
+                                            <div class="progress-bar  bg-danger" style="width: 100%" role="progressbar">
+                                            <h5><strong>67 %</strong></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-uppercase text-white text-center bg-info">Request Headers</h5>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                            <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept</td>
+                                                        <td class="text-wrap">application/json, text/plain, */*</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept-Language</td>
+                                                        <td class="text-wrap">en-US,en;q&#x3D;0.9</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Authorization</td>
+                                                        <td class="text-wrap">Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjJGQzY4NjcxMjc1OEM4MDUzMUNCMjREMDY1NEZFNzFGRUI0RjhCNTEiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJMOGFHY1NkWXlBVXh5eVRRWlVfbkgtdFBpMUUifQ.eyJuYmYiOjE3MDUwODQwMTEsImV4cCI6MTcwNTEyNzIxMSwiaXNzIjoiaHR0cHM6Ly9hdXRoLnNwb3J0c2luZm9zb2x1dGlvbnMuY29tIiwiYXVkIjpbImh0dHBzOi8vYXV0aC5zcG9ydHNpbmZvc29sdXRpb25zLmNvbS9yZXNvdXJjZXMiLCJzaXNhcGkiLCJ2Mi5hcGkub21uaWEiXSwiY2xpZW50X2lkIjoiT21uaWFAc3BvcnRzaW5mb3NvbHV0aW9ucy5jb20iLCJzZWNTdGFtcCI6IlhCVFhIQ0ZUUEtaS09ESVFSWFJOQTNRUDREQ1c1SjVSIiwic2lzYXBpIjoiVXNlciIsIm11bHRfdXNlciI6IlRydWUiLCJzaXNhcGkubmZsIjoiQmFzaWMiLCJzaXNhcGkuY2ZiIjoiQmFzaWMiLCJ2Mi5zaXNhcGkub21uaWEiOiJCYXNpYyIsInYyLnNpc2FwaS5vbW5pYS5uYmEiOiJUcnVlIiwidjIuc2lzYXBpLm9tbmlhLm5iYS5kcmFmdCI6IlRydWUiLCJ2Mi5zaXNhcGkub21uaWEubmJhLmRyYWZ0LmZpbG1yb29tIjoiVHJ1ZSIsInYyLnNpc2FwaS5vbW5pYS5uYmEuZmlsbXJvb20iOiJUcnVlIiwidjIuc2lzYXBpLm9tbmlhLm5mbC5maWxtcm9vbSI6IlRydWUiLCJzY29wZSI6WyJzaXNhcGkiLCJ2Mi5hcGkub21uaWEiXX0.MO3CkduFwtdBqLkSu_yCkS9ItDNBh_Y56BO045HMNi_BBj887VWDuBwP_gMAxiamLe0ambJtfsBFTApMxdUNzZd0hUz5bE3dZWVu2LO3MYP7vNzQv4ynSCnGwGIkXb51-y17H-DtO273fe3palLiZbOMnUUBGS9iExANsDmWH5pfEhabQxt6xW0K3wuPNnORqpWF9N82jVUdprHHI7_WxrGwD8mRJfYlMPcoiJNHnIBFG750e5UzeUPpiwmGq9mkWvRtSlHVoMlkPoG5F7pnUFLUI-L_5jcaDpET0AWdXCmRynHN-b5MSyDhyHbHZ3kBZtbEF0A5b-gLtphVhSJMpQ</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">User-Agent</td>
+                                                        <td class="text-wrap">Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Content-Type</td>
+                                                        <td class="text-wrap">application/json</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Cache-Control</td>
+                                                        <td class="text-wrap">no-cache</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Postman-Token</td>
+                                                        <td class="text-wrap">e0bb5c71-a059-49c4-b22d-535fb852985c</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Host</td>
+                                                        <td class="text-wrap">api.sportsinfosolutions.com</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Connection</td>
+                                                        <td class="text-wrap">keep-alive</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Content-Length</td>
+                                                        <td class="text-wrap">13634</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Body</h5>
+                                        <div class="dyn-height">
+                                            <pre><code id="copyReqText-9" class="prettyPrint">{
+            &quot;gameFilters&quot;: {
+                &quot;teamId&quot;: [],
+                &quot;offensiveTeamId&quot;: [],
+                &quot;defensiveTeamId&quot;: [],
+                &quot;homeTeamId&quot;: [],
+                &quot;awayTeamId&quot;: [],
+                &quot;recency&quot;: [
+                    {
+                        &quot;id&quot;: 832,
+                        &quot;value&quot;: &quot;832&quot;
+                    }
+                ],
+                &quot;fromSeason&quot;: [
+                    {
+                        &quot;id&quot;: 200,
+                        &quot;value&quot;: 2010
+                    }
+                ],
+                &quot;fromWeek&quot;: [
+                    {
+                        &quot;id&quot;: 201,
+                        &quot;value&quot;: 1
+                    }
+                ],
+                &quot;toSeason&quot;: [
+                    {
+                        &quot;id&quot;: 202,
+                        &quot;value&quot;: 2023
+                    }
+                ],
+                &quot;toWeek&quot;: [
+                    {
+                        &quot;id&quot;: 203,
+                        &quot;value&quot;: 1
+                    }
+                ],
+                &quot;includePlayoffs&quot;: [
+                    {
+                        &quot;id&quot;: 204,
+                        &quot;value&quot;: 204
+                    }
+                ],
+                &quot;minDate&quot;: [],
+                &quot;maxDate&quot;: [],
+                &quot;climate&quot;: [
+                    {
+                        &quot;id&quot;: 837,
+                        &quot;value&quot;: &quot;837&quot;
+                    }
+                ],
+                &quot;fieldSurface&quot;: [
+                    {
+                        &quot;id&quot;: 838,
+                        &quot;value&quot;: &quot;838&quot;
+                    }
+                ]
+            },
+            &quot;playFilters&quot;: {
+                &quot;backFormation&quot;: [
+                    {
+                        &quot;id&quot;: 848,
+                        &quot;value&quot;: &quot;848&quot;
+                    }
+                ],
+                &quot;blitz_Play&quot;: [
+                    {
+                        &quot;id&quot;: 862,
+                        &quot;value&quot;: &quot;862&quot;
+                    },
+                    {
+                        &quot;id&quot;: 862,
+                        &quot;value&quot;: &quot;862&quot;
+                    }
+                ],
+                &quot;blockingScheme&quot;: [
+                    {
+                        &quot;id&quot;: 564,
+                        &quot;value&quot;: &quot;564&quot;
+                    },
+                    {
+                        &quot;id&quot;: 578,
+                        &quot;value&quot;: &quot;578&quot;
+                    }
+                ],
+                &quot;blownBlock_Play&quot;: [
+                    {
+                        &quot;id&quot;: 861,
+                        &quot;value&quot;: &quot;861&quot;
+                    },
+                    {
+                        &quot;id&quot;: 861,
+                        &quot;value&quot;: &quot;861&quot;
+                    },
+                    {
+                        &quot;id&quot;: 861,
+                        &quot;value&quot;: &quot;861&quot;
+                    }
+                ],
+                &quot;brokenMissedTackle_Passer&quot;: [
+                    {
+                        &quot;id&quot;: 870,
+                        &quot;value&quot;: &quot;870&quot;
+                    }
+                ],
+                &quot;brokenMissedTackle_Receiver&quot;: [
+                    {
+                        &quot;id&quot;: 876,
+                        &quot;value&quot;: &quot;876&quot;
+                    }
+                ],
+                &quot;brokenMissedTackle_Rusher&quot;: [
+                    {
+                        &quot;id&quot;: 883,
+                        &quot;value&quot;: &quot;883&quot;
+                    }
+                ],
+                &quot;catchable&quot;: [
+                    {
+                        &quot;id&quot;: 865,
+                        &quot;value&quot;: &quot;865&quot;
+                    }
+                ],
+                &quot;challengedOffenseDefense&quot;: [
+                    {
+                        &quot;id&quot;: 855,
+                        &quot;value&quot;: &quot;855&quot;
+                    }
+                ],
+                &quot;contestedCatch&quot;: [
+                    {
+                        &quot;id&quot;: 875,
+                        &quot;value&quot;: &quot;875&quot;
+                    },
+                    {
+                        &quot;id&quot;: 875,
+                        &quot;value&quot;: &quot;875&quot;
+                    }
+                ],
+                &quot;coverageScheme&quot;: [
+                    {
+                        &quot;id&quot;: 885,
+                        &quot;value&quot;: &quot;885&quot;
+                    }
+                ],
+                &quot;personnel_DBclimate&quot;: [
+                    {
+                        &quot;id&quot;: 846,
+                        &quot;value&quot;: &quot;846&quot;
+                    }
+                ],
+                &quot;deepSafeties&quot;: [
+                    {
+                        &quot;id&quot;: 851,
+                        &quot;value&quot;: &quot;851&quot;
+                    }
+                ],
+                &quot;defendersInBox&quot;: [
+                    {
+                        &quot;id&quot;: 850,
+                        &quot;value&quot;: &quot;850&quot;
+                    }
+                ],
+                &quot;defensiveFront&quot;: [
+                    {
+                        &quot;id&quot;: 849,
+                        &quot;value&quot;: &quot;849&quot;
+                    }
+                ],
+                &quot;defensiveImpactPass&quot;: [],
+                &quot;defensiveImpactRun&quot;: [],
+                &quot;defensivePenaltyType&quot;: [
+                    {
+                        &quot;id&quot;: 895,
+                        &quot;value&quot;: &quot;895&quot;
+                    }
+                ],
+                &quot;personnel_DL&quot;: [
+                    {
+                        &quot;id&quot;: 844,
+                        &quot;value&quot;: &quot;844&quot;
+                    }
+                ],
+                &quot;down&quot;: [
+                    {
+                        &quot;id&quot;: 835,
+                        &quot;value&quot;: &quot;835&quot;
+                    }
+                ],
+                &quot;dropType&quot;: [
+                    {
+                        &quot;id&quot;: 858,
+                        &quot;value&quot;: &quot;858&quot;
+                    }
+                ],
+                &quot;endZoneTarget&quot;: [
+                    {
+                        &quot;id&quot;: 867,
+                        &quot;value&quot;: &quot;867&quot;
+                    }
+                ],
+                &quot;fakeFieldGoal&quot;: [],
+                &quot;fakePunt&quot;: [],
+                &quot;fieldSurface&quot;: [
+                    {
+                        &quot;id&quot;: 838,
+                        &quot;value&quot;: &quot;838&quot;
+                    }
+                ],
+                &quot;hash&quot;: [
+                    {
+                        &quot;id&quot;: 836,
+                        &quot;value&quot;: &quot;836&quot;
+                    }
+                ],
+                &quot;injury_Play&quot;: [
+                    {
+                        &quot;id&quot;: 896,
+                        &quot;value&quot;: &quot;896&quot;
+                    }
+                ],
+                &quot;injuryGamesMissed_Play&quot;: [
+                    {
+                        &quot;id&quot;: 899,
+                        &quot;value&quot;: &quot;899&quot;
+                    }
+                ],
+                &quot;injuryRegion_Play&quot;: [
+                    {
+                        &quot;id&quot;: 898,
+                        &quot;value&quot;: &quot;898&quot;
+                    }
+                ],
+                &quot;injuryType_Play&quot;: [
+                    {
+                        &quot;id&quot;: 897,
+                        &quot;value&quot;: &quot;897&quot;
+                    }
+                ],
+                &quot;inPocket&quot;: [
+                    {
+                        &quot;id&quot;: 860,
+                        &quot;value&quot;: &quot;860&quot;
+                    }
+                ],
+                &quot;kickoffResult&quot;: [],
+                &quot;kickoffType&quot;: [
+                    {
+                        &quot;id&quot;: 888,
+                        &quot;value&quot;: &quot;888&quot;
+                    }
+                ],
+                &quot;kickResult&quot;: [],
+                &quot;personnel_LB&quot;: [
+                    {
+                        &quot;id&quot;: 845,
+                        &quot;value&quot;: &quot;845&quot;
+                    }
+                ],
+                &quot;leadBlocker&quot;: [
+                    {
+                        &quot;id&quot;: 882,
+                        &quot;value&quot;: &quot;882&quot;
+                    }
+                ],
+                &quot;maxAirYards&quot;: [],
+                &quot;maxEPA&quot;: [],
+                &quot;maxFGDistance&quot;: [],
+                &quot;maxFirstContact&quot;: [],
+                &quot;maxMinutes&quot;: [],
+                &quot;maxOffFieldPosition&quot;: [],
+                &quot;maxOffScoreDifferential&quot;: [],
+                &quot;maxOffWinProbability&quot;: [],
+                &quot;maxPredictedCompPct&quot;: [],
+                &quot;maxPuntDistance&quot;: [],
+                &quot;maxSeconds&quot;: [],
+                &quot;maxSnapToDropbackResult&quot;: [],
+                &quot;maxSnapToPressure&quot;: [],
+                &quot;maxYACatch&quot;: [],
+                &quot;maxYAContact&quot;: [],
+                &quot;maxYardsOnPlay&quot;: [],
+                &quot;maxYardsToGo&quot;: [],
+                &quot;minAirYards&quot;: [],
+                &quot;minEPA&quot;: [],
+                &quot;minFGDistance&quot;: [],
+                &quot;minFirstContact&quot;: [],
+                &quot;minMinutes&quot;: [],
+                &quot;minOffFieldPosition&quot;: [],
+                &quot;minOffScoreDifferential&quot;: [],
+                &quot;minOffWinProbability&quot;: [],
+                &quot;minPredictedCompPct&quot;: [],
+                &quot;minPuntDistance&quot;: [],
+                &quot;minSeconds&quot;: [],
+                &quot;minSnapToDropbackResult&quot;: [],
+                &quot;minSnapToPressure&quot;: [],
+                &quot;minYACatch&quot;: [],
+                &quot;minYAContact&quot;: [],
+                &quot;minYardsOnPlay&quot;: [],
+                &quot;minYardsToGo&quot;: [],
+                &quot;motionType_Play&quot;: [
+                    {
+                        &quot;id&quot;: 856,
+                        &quot;value&quot;: &quot;856&quot;
+                    }
+                ],
+                &quot;noHuddle&quot;: [
+                    {
+                        &quot;id&quot;: 852,
+                        &quot;value&quot;: &quot;852&quot;
+                    }
+                ],
+                &quot;offensivePenaltyType&quot;: [
+                    {
+                        &quot;id&quot;: 894,
+                        &quot;value&quot;: &quot;894&quot;
+                    }
+                ],
+                &quot;personnel_OL&quot;: [
+                    {
+                        &quot;id&quot;: 843,
+                        &quot;value&quot;: &quot;843&quot;
+                    }
+                ],
+                &quot;passAccuracy&quot;: [
+                    {
+                        &quot;id&quot;: 864,
+                        &quot;value&quot;: &quot;864&quot;
+                    }
+                ],
+                &quot;passDirection&quot;: [
+                    {
+                        &quot;id&quot;: 863,
+                        &quot;value&quot;: &quot;863&quot;
+                    }
+                ],
+                &quot;passerFootwork&quot;: [
+                    {
+                        &quot;id&quot;: 869,
+                        &quot;value&quot;: &quot;869&quot;
+                    }
+                ],
+                &quot;passResult&quot;: [],
+                &quot;passRushers&quot;: [
+                    {
+                        &quot;id&quot;: 886,
+                        &quot;value&quot;: &quot;886&quot;
+                    }
+                ],
+                &quot;pastTheSticks&quot;: [
+                    {
+                        &quot;id&quot;: 866,
+                        &quot;value&quot;: &quot;866&quot;
+                    }
+                ],
+                &quot;penalty_Play&quot;: [
+                    {
+                        &quot;id&quot;: 893,
+                        &quot;value&quot;: &quot;893&quot;
+                    }
+                ],
+                &quot;personnel&quot;: [
+                    {
+                        &quot;id&quot;: 839,
+                        &quot;value&quot;: &quot;839&quot;
+                    }
+                ],
+                &quot;playAction&quot;: [
+                    {
+                        &quot;id&quot;: 859,
+                        &quot;value&quot;: &quot;859&quot;
+                    }
+                ],
+                &quot;playDesign&quot;: [
+                    {
+                        &quot;id&quot;: 854,
+                        &quot;value&quot;: &quot;854&quot;
+                    }
+                ],
+                &quot;playResult&quot;: [],
+                &quot;puntFormation&quot;: [
+                    {
+                        &quot;id&quot;: 890,
+                        &quot;value&quot;: &quot;890&quot;
+                    }
+                ],
+                &quot;puntResult&quot;: [],
+                &quot;puntType&quot;: [
+                    {
+                        &quot;id&quot;: 891,
+                        &quot;value&quot;: &quot;891&quot;
+                    }
+                ],
+                &quot;quarter&quot;: [
+                    {
+                        &quot;id&quot;: 834,
+                        &quot;value&quot;: &quot;834&quot;
+                    }
+                ],
+                &quot;personnel_RB&quot;: [
+                    {
+                        &quot;id&quot;: 840,
+                        &quot;value&quot;: &quot;840&quot;
+                    }
+                ],
+                &quot;readOption&quot;: [
+                    {
+                        &quot;id&quot;: 880,
+                        &quot;value&quot;: &quot;880&quot;
+                    }
+                ],
+                &quot;receiverDistribution&quot;: [
+                    {
+                        &quot;id&quot;: 847,
+                        &quot;value&quot;: &quot;847&quot;
+                    }
+                ],
+                &quot;rPO&quot;: [
+                    {
+                        &quot;id&quot;: 857,
+                        &quot;value&quot;: &quot;857&quot;
+                    }
+                ],
+                &quot;runDirection_Actual&quot;: [
+                    {
+                        &quot;id&quot;: 879,
+                        &quot;value&quot;: &quot;879&quot;
+                    }
+                ],
+                &quot;runDirection_Designed&quot;: [
+                    {
+                        &quot;id&quot;: 878,
+                        &quot;value&quot;: &quot;878&quot;
+                    }
+                ],
+                &quot;runType&quot;: [
+                    {
+                        &quot;id&quot;: 877,
+                        &quot;value&quot;: &quot;877&quot;
+                    }
+                ],
+                &quot;shotgun&quot;: [
+                    {
+                        &quot;id&quot;: 853,
+                        &quot;value&quot;: &quot;853&quot;
+                    }
+                ],
+                &quot;targetAlignment&quot;: [
+                    {
+                        &quot;id&quot;: 873,
+                        &quot;value&quot;: &quot;873&quot;
+                    }
+                ],
+                &quot;targetLinedUp&quot;: [
+                    {
+                        &quot;id&quot;: 874,
+                        &quot;value&quot;: &quot;874&quot;
+                    }
+                ],
+                &quot;targetPosition&quot;: [
+                    {
+                        &quot;id&quot;: 872,
+                        &quot;value&quot;: &quot;872&quot;
+                    }
+                ],
+                &quot;targetPrimaryDefenderPosition&quot;: [
+                    {
+                        &quot;id&quot;: 887,
+                        &quot;value&quot;: &quot;887&quot;
+                    }
+                ],
+                &quot;targetType&quot;: [
+                    {
+                        &quot;id&quot;: 871,
+                        &quot;value&quot;: &quot;871&quot;
+                    }
+                ],
+                &quot;personnel_TE&quot;: [
+                    {
+                        &quot;id&quot;: 841,
+                        &quot;value&quot;: &quot;841&quot;
+                    }
+                ],
+                &quot;throwType&quot;: [
+                    {
+                        &quot;id&quot;: 868,
+                        &quot;value&quot;: &quot;868&quot;
+                    }
+                ],
+                &quot;usedDesignedGap&quot;: [
+                    {
+                        &quot;id&quot;: 881,
+                        &quot;value&quot;: &quot;881&quot;
+                    }
+                ],
+                &quot;personnel_WR&quot;: [
+                    {
+                        &quot;id&quot;: 842,
+                        &quot;value&quot;: &quot;842&quot;
+                    }
+                ]
+            },
+            &quot;playerFilters&quot;: {
+                &quot;qb&quot;: [],
+                &quot;rb&quot;: [
+                    {
+                        &quot;playerId&quot;: {
+                            &quot;id&quot;: 6,
+                            &quot;value&quot;: &quot;9626&quot;
+                        },
+                        &quot;injury&quot;: [
+                            {
+                                &quot;id&quot;: 14,
+                                &quot;value&quot;: &quot;14&quot;
+                            }
+                        ],
+                        &quot;onField&quot;: [
+                            {
+                                &quot;id&quot;: 7,
+                                &quot;value&quot;: &quot;7&quot;
+                            }
+                        ],
+                        &quot;penalty&quot;: [
+                            {
+                                &quot;id&quot;: 10,
+                                &quot;value&quot;: &quot;10&quot;
+                            }
+                        ],
+                        &quot;penaltyDrawn&quot;: [
+                            {
+                                &quot;id&quot;: 11,
+                                &quot;value&quot;: &quot;11&quot;
+                            }
+                        ],
+                        &quot;role_RB&quot;: [
+                            {
+                                &quot;id&quot;: 20,
+                                &quot;value&quot;: &quot;20&quot;
+                            }
+                        ],
+                        &quot;totalPointsAboveAvg&quot;: [
+                            {
+                                &quot;id&quot;: 797,
+                                &quot;value&quot;: &quot;797&quot;
+                            }
+                        ],
+                        &quot;motion&quot;: [
+                            {
+                                &quot;id&quot;: 23,
+                                &quot;value&quot;: &quot;23&quot;
+                            }
+                        ],
+                        &quot;motionType&quot;: [
+                            {
+                                &quot;id&quot;: 29,
+                                &quot;value&quot;: &quot;29&quot;
+                            },
+                            {
+                                &quot;id&quot;: 31,
+                                &quot;value&quot;: &quot;31&quot;
+                            },
+                            {
+                                &quot;id&quot;: 33,
+                                &quot;value&quot;: &quot;33&quot;
+                            },
+                            {
+                                &quot;id&quot;: 35,
+                                &quot;value&quot;: &quot;35&quot;
+                            },
+                            {
+                                &quot;id&quot;: 37,
+                                &quot;value&quot;: &quot;37&quot;
+                            },
+                            {
+                                &quot;id&quot;: 39,
+                                &quot;value&quot;: &quot;39&quot;
+                            },
+                            {
+                                &quot;id&quot;: 41,
+                                &quot;value&quot;: &quot;41&quot;
+                            },
+                            {
+                                &quot;id&quot;: 28,
+                                &quot;value&quot;: &quot;28&quot;
+                            }
+                        ],
+                        &quot;usedDesignedGap&quot;: [
+                            {
+                                &quot;id&quot;: 25,
+                                &quot;value&quot;: &quot;25&quot;
+                            }
+                        ],
+                        &quot;shortcuts&quot;: [
+                            {
+                                &quot;id&quot;: 9,
+                                &quot;value&quot;: &quot;9&quot;
+                            }
+                        ]
+                    }
+                ],
+                &quot;wr&quot;: [],
+                &quot;te&quot;: [],
+                &quot;ol&quot;: [],
+                &quot;idl&quot;: [],
+                &quot;ed&quot;: [],
+                &quot;lb&quot;: [],
+                &quot;cb&quot;: [],
+                &quot;s&quot;: [],
+                &quot;k&quot;: [],
+                &quot;p&quot;: []
+            }
+        }</code></pre>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button class="btn btn-outline-secondary btn-sm copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#copyReqText-9">Copy to Clipboard</button>
+                                        </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Headers</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                        <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-nowrap">Date</td>
+                                                    <td class="text-wrap">Fri, 12 Jan 2024 18:30:15 GMT</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Type</td>
+                                                    <td class="text-wrap">application/json; charset&#x3D;utf-8</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Transfer-Encoding</td>
+                                                    <td class="text-wrap">chunked</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Connection</td>
+                                                    <td class="text-wrap">keep-alive</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Server</td>
+                                                    <td class="text-wrap">Microsoft-IIS/10.0</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Security-Policy</td>
+                                                    <td class="text-wrap">default-src &#x27;self&#x27; * &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; data:</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Rate-Limit-Limit</td>
+                                                    <td class="text-wrap">1s</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Rate-Limit-Remaining</td>
+                                                    <td class="text-wrap">19</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Rate-Limit-Reset</td>
+                                                    <td class="text-wrap">2024-01-12T18:30:16.4441886Z</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Powered-By</td>
+                                                    <td class="text-wrap">ASP.NET</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Body</h5>
+                                        <div class="dyn-height">
+                                                <pre><code id="copyText-70842a67-8197-4475-b5fa-86247b318b65" class="prettyPrint">{&quot;status&quot;:400,&quot;title&quot;:&quot;Bad Request&quot;,&quot;detail&quot;:&quot;Invalid filter option passed&quot;,&quot;filterOptionId&quot;:25}</code></pre>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button class="btn btn-outline-secondary btn-sm copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#copyText-70842a67-8197-4475-b5fa-86247b318b65">Copy to Clipboard</button>
+                                        </div>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card border-info">
+                                <div class="card-body">
+                                <h5 class="card-title text-uppercase text-white text-center bg-info">Test Information</h5>
+                                    <div class="table-responsive text-nowrap">
+                                        <table id="myTable-70842a67-8197-4475-b5fa-86247b318b65" class="table table-hover">
+                                        <thead><tr class="text-center"><th>Name</th><th>Passed</th><th>Failed</th><th>Skipped</th></tr></thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td >HTTP Status test - 200</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr>
+                                                    <td >Timeout test - Response time is less than 35000</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr>
+                                                    <td >Correct request</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center bg-danger">1</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr class="bg-light">
+                                                    <td><strong>Total</strong></td>
+                                                    <td class="text-center">2</td>
+                                                    <td class="text-center">1</td>
+                                                    <td class="text-center">0</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <div class="row ">
+                                    <div class="col-sm-12 mb-3">
+                                        <div class="card-deck">
+                                        <div class="card border-danger" style="width: 50rem;">
+                                            <div class="card-body">
+                                                <h5 class="card-title text-uppercase text-white text-center bg-danger">Test Failure</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                    <thead><tr class="text-nowrap"><th>Test Name</th><th>Assertion Error</th></tr></thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="w-45 text-nowrap ">Correct request</td>
+                                                                <td class="w-55"><pre><code >expected 400 to not deeply equal 400</code></pre></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>          
+                                </div>
+                            </div>
+                        </div>           
+                    </div>
+                    </div>
+                </div>      
+                </div>
+            </div>
+            </div>
+        </div>      
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+</body>
+</html>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/remarkable/1.7.1/remarkable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Data Table Configuration -->
+
+<script>
+$(document).ready( function () {
+    $('#myTable-71a7def8-6795-4555-9214-475efb60564c').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-d31799fe-25bc-47ce-8d59-4ad54462f868').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-e4c72c98-d0c9-43bd-9b65-fb5cd9de8c11').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-a618c6e6-8b04-4f4e-a640-190abfe7a331').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-c8826b0d-d728-4493-bc12-58f196f303bf').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-9e3cf139-e767-4348-82aa-7a307abe7389').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-a6f53347-37e8-47df-b579-e93296f78a15').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-d315a902-5405-41a6-96f1-457ad75c2823').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-d688c457-6cc6-4b07-bc85-c7d102fc05e7').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-11760063-679a-443c-95fe-d38a1eeef0bd').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-efc429c5-cbb5-4b14-acf1-910a1cf1f59c').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-b7957735-35d4-417d-a9e9-e5f5183f72be').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-ef3ba00a-0f2a-444c-89af-32f9a7079ea8').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-6bc54ea8-9b86-4bbf-9bff-ccd5870cac0e').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-40a566a0-3c88-4b8b-8ddb-fc60a385cb37').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-2efb555e-6d98-48fc-aacd-ab504f79decb').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-53eb3cff-573e-454c-8ebd-ddbcf3cd7b04').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-9bbdc8e7-4168-4942-8118-b9dbb5fa9199').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-426a9e6a-56cf-44b9-ba42-23aa0da01cf0').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-bde6fb5c-de78-44c3-9e1c-3b9b0b8c4be6').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-218a4cb9-f0d7-41b8-ae30-bce8a7de6add').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-a13f6661-2f23-4199-ac51-715185afc2dd').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-3e392027-7f04-4ff1-88b2-d5310b6cdee4').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-194cb98f-3547-45e5-b389-e73d2e9025b3').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-a4d0d599-ca2d-4a9a-955a-6e44118276ea').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-18473fa3-b751-41e6-9e40-baf10e3297f8').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-35d479cd-b93f-4e64-9889-24061ea76085').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-d5b6e21c-4b4f-462f-b003-b2851e2ff993').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-a88e0fef-421d-4e22-8c2b-4fbb05d2cff2').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-af47bdfe-149e-4eff-914d-197a7e80b868').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-04acf4d4-a4ff-488d-b0ae-80f231c4ed51').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-906be3da-26c7-41fd-acc6-04ef90e98dc4').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-1acb8970-0c7d-475f-88bf-0d0655440363').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-8e08c5fd-f575-4036-8988-896c9c30e4e0').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-de7d04d4-49cc-40d3-9027-cc187dfe45ae').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-93365fe2-afc5-4b2a-a85f-363e3318da4f').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-06f21ea1-d3f1-4284-9c76-03f3301fdf80').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-fee6eda6-703b-4223-9144-8c0aa3f1b213').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-86fc08ca-248c-4441-a52b-16bad22a68a7').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-f35c5f9f-036c-4466-8bd9-c9ac3ed01edb').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-70842a67-8197-4475-b5fa-86247b318b65').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-099d8b1c-59f4-40fe-a0ba-91fd5aaafc4f').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-87931e31-337f-41d4-8b6b-85db46756a7f').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+$(document).ready( function () {
+    $('#myTable-79f72642-747e-40f8-913b-1c42ab1177c7').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false
+    });
+});
+</script>
+
+<!-- Tooltip Configuration -->
+
+<script>
+$(document).ready(function() {
+    $('[data-toggle="tooltip"]').tooltip({
+        trigger : 'hover'
+    })
+})
+</script>
+
+<!-- Pretty Print the Response Body-->
+
+<script>
+function isJSON(data)
+{
+    var ret = true;
+    try {
+            JSON.parse(data);
+    }catch(e) {
+            ret = false;
+    }
+    return ret;
+}
+
+function isXML(data)
+{
+    return (data.length > 0 && data[0] === '<');
+}
+
+// see https://gist.github.com/sente/1083506/d2834134cd070dbcc08bf42ee27dabb746a1c54d#gistcomment-2254622
+function formatXML(data) {
+    const PADDING = ' '.repeat(2); // set desired indent size here
+    const reg = /(>)(<)(\/*)/g;
+    let pad = 0;
+    xml = data.replace(reg, '$1\r\n$2$3');
+
+    return xml.split('\r\n').map((node, index) => {
+        let indent = 0;
+        if (node.match(/.+<\/\w[^>]*>$/)) {
+            indent = 0;
+        } else if (node.match(/^<\/\w/) && pad > 0) {
+            pad -= 1;
+        } else if (node.match(/^<\w[^>]*[^\/]>.*$/)) {
+            indent = 1;
+        } else {
+            indent = 0;
+        }
+
+        pad += indent;
+        return PADDING.repeat(pad - indent) + node;
+    }).join('\r\n');
+}
+
+$(".prettyPrint").each(function () {
+        var data = $(this).text();
+        // Verify whether data is JSON
+        if(isJSON(data))
+        {
+                obj = JSON.parse(data);
+                data = JSON.stringify(obj, null, 2);
+        }
+        else if(isXML(data)) {
+            data = formatXML(data);            
+        }
+        $(this).text(data);
+});
+</script>
+
+
+<!-- Copy Response Body To Clipboard -->
+
+<script>
+    var clipboard = new ClipboardJS('.copyButton');
+    
+    clipboard.on('success', function(e) {        
+        e.clearSelection();
+        $(".copyButton").addClass("bg-success text-white")
+        e.trigger.textContent = '✔ Copied!';
+        window.setTimeout(function() {
+            $(".copyButton").removeClass("bg-success text-white")
+            e.trigger.textContent = 'Copy to Clipboard';
+        }, 2000);
+    });
+    clipboard.on('error', function(e) {
+        e.clearSelection();
+        $(".copyButton").addClass("bg-danger text-white")
+        e.trigger.textContent = '✗ Not Copied';
+        window.setTimeout(function() {
+            $(".copyButton").removeClass("bg-danger text-white")
+            e.trigger.textContent = 'Copy to Clipboard';
+        }, 2000);
+    });
+
+</script>
+
+<!-- Render the Description Markdown and link in the test failures -->
+
+<script>
+    const remarkable = new Remarkable();
+    
+    const descriptions = document.querySelectorAll(".renderMarkdown");
+    descriptions.forEach(description => {
+        description.innerHTML = renderHtmlFromMarkdown(description.textContent);
+    });
+    function renderHtmlFromMarkdown(markdown) {
+        return remarkable.render(trim(markdown));
+    }
+    function trim(string) {
+        return string ? string.replace(/^ +| +$/gm, "") : string;
+    }
+</script>
+
+<!-- Show/Hide The Requests -->
+
+<script>
+$('#openAllRequests').on('click', function(e) {
+let clickCount = $(this).data("clickCount") || 1
+switch (clickCount){
+    case 1:
+            $('#requests-006ac4fe-ea14-4ba1-832e-d47aa49d2dc9').removeClass('collapsed')
+            $('#collapse-006ac4fe-ea14-4ba1-832e-d47aa49d2dc9').removeClass('collapsed')
+            $('#requests-006ac4fe-ea14-4ba1-832e-d47aa49d2dc9').addClass('show')
+            $('#collapse-006ac4fe-ea14-4ba1-832e-d47aa49d2dc9').addClass('show')
+            $('#requests-2cea6445-e032-4925-924c-63387bbf3f63').removeClass('collapsed')
+            $('#collapse-2cea6445-e032-4925-924c-63387bbf3f63').removeClass('collapsed')
+            $('#requests-2cea6445-e032-4925-924c-63387bbf3f63').addClass('show')
+            $('#collapse-2cea6445-e032-4925-924c-63387bbf3f63').addClass('show')
+            $('#requests-e2ff3965-9b1f-4076-b00e-c5818c3ac1cb').removeClass('collapsed')
+            $('#collapse-e2ff3965-9b1f-4076-b00e-c5818c3ac1cb').removeClass('collapsed')
+            $('#requests-e2ff3965-9b1f-4076-b00e-c5818c3ac1cb').addClass('show')
+            $('#collapse-e2ff3965-9b1f-4076-b00e-c5818c3ac1cb').addClass('show')
+            $('#requests-5c1689f7-5314-436c-98ca-e2873301d377').removeClass('collapsed')
+            $('#collapse-5c1689f7-5314-436c-98ca-e2873301d377').removeClass('collapsed')
+            $('#requests-5c1689f7-5314-436c-98ca-e2873301d377').addClass('show')
+            $('#collapse-5c1689f7-5314-436c-98ca-e2873301d377').addClass('show')
+            $('#requests-1407f439-65ca-4a84-994a-c8e7f6c534e0').removeClass('collapsed')
+            $('#collapse-1407f439-65ca-4a84-994a-c8e7f6c534e0').removeClass('collapsed')
+            $('#requests-1407f439-65ca-4a84-994a-c8e7f6c534e0').addClass('show')
+            $('#collapse-1407f439-65ca-4a84-994a-c8e7f6c534e0').addClass('show')
+            $('#requests-d80a102b-620b-4399-9b58-42ed5924ee31').removeClass('collapsed')
+            $('#collapse-d80a102b-620b-4399-9b58-42ed5924ee31').removeClass('collapsed')
+            $('#requests-d80a102b-620b-4399-9b58-42ed5924ee31').addClass('show')
+            $('#collapse-d80a102b-620b-4399-9b58-42ed5924ee31').addClass('show')
+            $('#requests-ec0e6fc4-987a-4148-8d98-8c6713963063').removeClass('collapsed')
+            $('#collapse-ec0e6fc4-987a-4148-8d98-8c6713963063').removeClass('collapsed')
+            $('#requests-ec0e6fc4-987a-4148-8d98-8c6713963063').addClass('show')
+            $('#collapse-ec0e6fc4-987a-4148-8d98-8c6713963063').addClass('show')
+            $('#requests-3374908a-358d-4abb-97a2-25109b6e7ebb').removeClass('collapsed')
+            $('#collapse-3374908a-358d-4abb-97a2-25109b6e7ebb').removeClass('collapsed')
+            $('#requests-3374908a-358d-4abb-97a2-25109b6e7ebb').addClass('show')
+            $('#collapse-3374908a-358d-4abb-97a2-25109b6e7ebb').addClass('show')
+            $('#requests-a1639f4e-a973-42d4-8cba-9dc8fc226a03').removeClass('collapsed')
+            $('#collapse-a1639f4e-a973-42d4-8cba-9dc8fc226a03').removeClass('collapsed')
+            $('#requests-a1639f4e-a973-42d4-8cba-9dc8fc226a03').addClass('show')
+            $('#collapse-a1639f4e-a973-42d4-8cba-9dc8fc226a03').addClass('show')
+            $('#requests-15c0a7fb-60a7-42ae-9553-c95966b97a76').removeClass('collapsed')
+            $('#collapse-15c0a7fb-60a7-42ae-9553-c95966b97a76').removeClass('collapsed')
+            $('#requests-15c0a7fb-60a7-42ae-9553-c95966b97a76').addClass('show')
+            $('#collapse-15c0a7fb-60a7-42ae-9553-c95966b97a76').addClass('show')
+            $('#requests-ecefb86f-f6b8-4156-8f92-12f7e0154552').removeClass('collapsed')
+            $('#collapse-ecefb86f-f6b8-4156-8f92-12f7e0154552').removeClass('collapsed')
+            $('#requests-ecefb86f-f6b8-4156-8f92-12f7e0154552').addClass('show')
+            $('#collapse-ecefb86f-f6b8-4156-8f92-12f7e0154552').addClass('show')
+            $('#requests-b481dcb3-9d19-441d-a724-c528eb6ecb9c').removeClass('collapsed')
+            $('#collapse-b481dcb3-9d19-441d-a724-c528eb6ecb9c').removeClass('collapsed')
+            $('#requests-b481dcb3-9d19-441d-a724-c528eb6ecb9c').addClass('show')
+            $('#collapse-b481dcb3-9d19-441d-a724-c528eb6ecb9c').addClass('show')
+            $('#requests-6c2989da-5d99-47c7-b2e1-154fce0ab978').removeClass('collapsed')
+            $('#collapse-6c2989da-5d99-47c7-b2e1-154fce0ab978').removeClass('collapsed')
+            $('#requests-6c2989da-5d99-47c7-b2e1-154fce0ab978').addClass('show')
+            $('#collapse-6c2989da-5d99-47c7-b2e1-154fce0ab978').addClass('show')
+            $('#requests-b8f4b52c-d812-45e4-b50c-c18c7e6f3ccc').removeClass('collapsed')
+            $('#collapse-b8f4b52c-d812-45e4-b50c-c18c7e6f3ccc').removeClass('collapsed')
+            $('#requests-b8f4b52c-d812-45e4-b50c-c18c7e6f3ccc').addClass('show')
+            $('#collapse-b8f4b52c-d812-45e4-b50c-c18c7e6f3ccc').addClass('show')
+            $('#requests-153c7755-1435-440e-a13a-8cd571c0b762').removeClass('collapsed')
+            $('#collapse-153c7755-1435-440e-a13a-8cd571c0b762').removeClass('collapsed')
+            $('#requests-153c7755-1435-440e-a13a-8cd571c0b762').addClass('show')
+            $('#collapse-153c7755-1435-440e-a13a-8cd571c0b762').addClass('show')
+            $('#requests-1f20eae5-91b9-4914-891c-a2fb3e58253b').removeClass('collapsed')
+            $('#collapse-1f20eae5-91b9-4914-891c-a2fb3e58253b').removeClass('collapsed')
+            $('#requests-1f20eae5-91b9-4914-891c-a2fb3e58253b').addClass('show')
+            $('#collapse-1f20eae5-91b9-4914-891c-a2fb3e58253b').addClass('show')
+            $('#requests-dc1ed038-7b90-4553-b1ed-492e53a08975').removeClass('collapsed')
+            $('#collapse-dc1ed038-7b90-4553-b1ed-492e53a08975').removeClass('collapsed')
+            $('#requests-dc1ed038-7b90-4553-b1ed-492e53a08975').addClass('show')
+            $('#collapse-dc1ed038-7b90-4553-b1ed-492e53a08975').addClass('show')
+            $('#requests-8ebafe9e-7add-4e10-9278-515b48a7628a').removeClass('collapsed')
+            $('#collapse-8ebafe9e-7add-4e10-9278-515b48a7628a').removeClass('collapsed')
+            $('#requests-8ebafe9e-7add-4e10-9278-515b48a7628a').addClass('show')
+            $('#collapse-8ebafe9e-7add-4e10-9278-515b48a7628a').addClass('show')
+            $('#requests-6053eca1-848f-40e8-90ba-d7829c26e86d').removeClass('collapsed')
+            $('#collapse-6053eca1-848f-40e8-90ba-d7829c26e86d').removeClass('collapsed')
+            $('#requests-6053eca1-848f-40e8-90ba-d7829c26e86d').addClass('show')
+            $('#collapse-6053eca1-848f-40e8-90ba-d7829c26e86d').addClass('show')
+            $('#requests-6e24f905-ab27-4392-9503-29b8c0d5abca').removeClass('collapsed')
+            $('#collapse-6e24f905-ab27-4392-9503-29b8c0d5abca').removeClass('collapsed')
+            $('#requests-6e24f905-ab27-4392-9503-29b8c0d5abca').addClass('show')
+            $('#collapse-6e24f905-ab27-4392-9503-29b8c0d5abca').addClass('show')
+            $('#requests-161bd2d5-c21a-40a5-a55a-a621c2d7bf45').removeClass('collapsed')
+            $('#collapse-161bd2d5-c21a-40a5-a55a-a621c2d7bf45').removeClass('collapsed')
+            $('#requests-161bd2d5-c21a-40a5-a55a-a621c2d7bf45').addClass('show')
+            $('#collapse-161bd2d5-c21a-40a5-a55a-a621c2d7bf45').addClass('show')
+            $('#requests-76f85fd4-db0c-4b72-980f-455d22215295').removeClass('collapsed')
+            $('#collapse-76f85fd4-db0c-4b72-980f-455d22215295').removeClass('collapsed')
+            $('#requests-76f85fd4-db0c-4b72-980f-455d22215295').addClass('show')
+            $('#collapse-76f85fd4-db0c-4b72-980f-455d22215295').addClass('show')
+            $('#requests-d777973c-5824-4980-ba86-b1a0dae9f08b').removeClass('collapsed')
+            $('#collapse-d777973c-5824-4980-ba86-b1a0dae9f08b').removeClass('collapsed')
+            $('#requests-d777973c-5824-4980-ba86-b1a0dae9f08b').addClass('show')
+            $('#collapse-d777973c-5824-4980-ba86-b1a0dae9f08b').addClass('show')
+            $('#requests-f8db37dd-2819-4695-a70a-3376bef7a38a').removeClass('collapsed')
+            $('#collapse-f8db37dd-2819-4695-a70a-3376bef7a38a').removeClass('collapsed')
+            $('#requests-f8db37dd-2819-4695-a70a-3376bef7a38a').addClass('show')
+            $('#collapse-f8db37dd-2819-4695-a70a-3376bef7a38a').addClass('show')
+            $('#requests-b4a275fb-5228-4630-b384-2fef93bef4e4').removeClass('collapsed')
+            $('#collapse-b4a275fb-5228-4630-b384-2fef93bef4e4').removeClass('collapsed')
+            $('#requests-b4a275fb-5228-4630-b384-2fef93bef4e4').addClass('show')
+            $('#collapse-b4a275fb-5228-4630-b384-2fef93bef4e4').addClass('show')
+            $('#requests-62436abc-c24b-413c-b0a6-8655dffdac1d').removeClass('collapsed')
+            $('#collapse-62436abc-c24b-413c-b0a6-8655dffdac1d').removeClass('collapsed')
+            $('#requests-62436abc-c24b-413c-b0a6-8655dffdac1d').addClass('show')
+            $('#collapse-62436abc-c24b-413c-b0a6-8655dffdac1d').addClass('show')
+            $('#requests-07bbcbf7-2dfb-4c32-8a9f-23b13283c836').removeClass('collapsed')
+            $('#collapse-07bbcbf7-2dfb-4c32-8a9f-23b13283c836').removeClass('collapsed')
+            $('#requests-07bbcbf7-2dfb-4c32-8a9f-23b13283c836').addClass('show')
+            $('#collapse-07bbcbf7-2dfb-4c32-8a9f-23b13283c836').addClass('show')
+            $('#requests-c472fbec-066d-4a68-ae3a-26cfecdf782f').removeClass('collapsed')
+            $('#collapse-c472fbec-066d-4a68-ae3a-26cfecdf782f').removeClass('collapsed')
+            $('#requests-c472fbec-066d-4a68-ae3a-26cfecdf782f').addClass('show')
+            $('#collapse-c472fbec-066d-4a68-ae3a-26cfecdf782f').addClass('show')
+            $('#requests-7f040cf5-c7b5-4a40-a277-8e4839304325').removeClass('collapsed')
+            $('#collapse-7f040cf5-c7b5-4a40-a277-8e4839304325').removeClass('collapsed')
+            $('#requests-7f040cf5-c7b5-4a40-a277-8e4839304325').addClass('show')
+            $('#collapse-7f040cf5-c7b5-4a40-a277-8e4839304325').addClass('show')
+            $('#requests-7fa0487a-c416-4041-b8b2-123349352d01').removeClass('collapsed')
+            $('#collapse-7fa0487a-c416-4041-b8b2-123349352d01').removeClass('collapsed')
+            $('#requests-7fa0487a-c416-4041-b8b2-123349352d01').addClass('show')
+            $('#collapse-7fa0487a-c416-4041-b8b2-123349352d01').addClass('show')
+            $('#requests-0fa89d36-d5ab-485d-bfda-e54756c18a5e').removeClass('collapsed')
+            $('#collapse-0fa89d36-d5ab-485d-bfda-e54756c18a5e').removeClass('collapsed')
+            $('#requests-0fa89d36-d5ab-485d-bfda-e54756c18a5e').addClass('show')
+            $('#collapse-0fa89d36-d5ab-485d-bfda-e54756c18a5e').addClass('show')
+            $('#requests-f71ded0f-0c5f-4495-bcec-dd03e7ea125a').removeClass('collapsed')
+            $('#collapse-f71ded0f-0c5f-4495-bcec-dd03e7ea125a').removeClass('collapsed')
+            $('#requests-f71ded0f-0c5f-4495-bcec-dd03e7ea125a').addClass('show')
+            $('#collapse-f71ded0f-0c5f-4495-bcec-dd03e7ea125a').addClass('show')
+            $('#requests-7bb2bfb1-d429-4609-8159-f5119841c02f').removeClass('collapsed')
+            $('#collapse-7bb2bfb1-d429-4609-8159-f5119841c02f').removeClass('collapsed')
+            $('#requests-7bb2bfb1-d429-4609-8159-f5119841c02f').addClass('show')
+            $('#collapse-7bb2bfb1-d429-4609-8159-f5119841c02f').addClass('show')
+            $('#requests-42910891-78d7-42f9-9345-dcc2c88ec823').removeClass('collapsed')
+            $('#collapse-42910891-78d7-42f9-9345-dcc2c88ec823').removeClass('collapsed')
+            $('#requests-42910891-78d7-42f9-9345-dcc2c88ec823').addClass('show')
+            $('#collapse-42910891-78d7-42f9-9345-dcc2c88ec823').addClass('show')
+            $('#requests-1f5ef5a2-6a33-4dbf-baba-40bff8093119').removeClass('collapsed')
+            $('#collapse-1f5ef5a2-6a33-4dbf-baba-40bff8093119').removeClass('collapsed')
+            $('#requests-1f5ef5a2-6a33-4dbf-baba-40bff8093119').addClass('show')
+            $('#collapse-1f5ef5a2-6a33-4dbf-baba-40bff8093119').addClass('show')
+            $('#requests-3f12ba1a-a6e9-4faa-9676-25af7f2c2ddf').removeClass('collapsed')
+            $('#collapse-3f12ba1a-a6e9-4faa-9676-25af7f2c2ddf').removeClass('collapsed')
+            $('#requests-3f12ba1a-a6e9-4faa-9676-25af7f2c2ddf').addClass('show')
+            $('#collapse-3f12ba1a-a6e9-4faa-9676-25af7f2c2ddf').addClass('show')
+            $('#requests-4078b356-53a2-4df6-9e54-c867b31b2934').removeClass('collapsed')
+            $('#collapse-4078b356-53a2-4df6-9e54-c867b31b2934').removeClass('collapsed')
+            $('#requests-4078b356-53a2-4df6-9e54-c867b31b2934').addClass('show')
+            $('#collapse-4078b356-53a2-4df6-9e54-c867b31b2934').addClass('show')
+            $('#requests-e9ac216c-8e99-4eb9-afa4-0abcd7a99edf').removeClass('collapsed')
+            $('#collapse-e9ac216c-8e99-4eb9-afa4-0abcd7a99edf').removeClass('collapsed')
+            $('#requests-e9ac216c-8e99-4eb9-afa4-0abcd7a99edf').addClass('show')
+            $('#collapse-e9ac216c-8e99-4eb9-afa4-0abcd7a99edf').addClass('show')
+            $('#requests-52be58e9-1fa0-4c25-a2b2-989d6abfcdb1').removeClass('collapsed')
+            $('#collapse-52be58e9-1fa0-4c25-a2b2-989d6abfcdb1').removeClass('collapsed')
+            $('#requests-52be58e9-1fa0-4c25-a2b2-989d6abfcdb1').addClass('show')
+            $('#collapse-52be58e9-1fa0-4c25-a2b2-989d6abfcdb1').addClass('show')
+            $('#requests-a9ebd125-3d5f-4c83-9687-b41715512c2d').removeClass('collapsed')
+            $('#collapse-a9ebd125-3d5f-4c83-9687-b41715512c2d').removeClass('collapsed')
+            $('#requests-a9ebd125-3d5f-4c83-9687-b41715512c2d').addClass('show')
+            $('#collapse-a9ebd125-3d5f-4c83-9687-b41715512c2d').addClass('show')
+            $('#requests-504de2e7-17ce-45a7-8f1e-6e03beef5a81').removeClass('collapsed')
+            $('#collapse-504de2e7-17ce-45a7-8f1e-6e03beef5a81').removeClass('collapsed')
+            $('#requests-504de2e7-17ce-45a7-8f1e-6e03beef5a81').addClass('show')
+            $('#collapse-504de2e7-17ce-45a7-8f1e-6e03beef5a81').addClass('show')
+            $('#requests-7579edee-9aaa-4b61-a921-d13350035be2').removeClass('collapsed')
+            $('#collapse-7579edee-9aaa-4b61-a921-d13350035be2').removeClass('collapsed')
+            $('#requests-7579edee-9aaa-4b61-a921-d13350035be2').addClass('show')
+            $('#collapse-7579edee-9aaa-4b61-a921-d13350035be2').addClass('show')
+            $('#requests-ab0636b9-56c4-4f6f-9359-720367a44fd2').removeClass('collapsed')
+            $('#collapse-ab0636b9-56c4-4f6f-9359-720367a44fd2').removeClass('collapsed')
+            $('#requests-ab0636b9-56c4-4f6f-9359-720367a44fd2').addClass('show')
+            $('#collapse-ab0636b9-56c4-4f6f-9359-720367a44fd2').addClass('show')
+            $('#requests-85fcc9d3-0060-4c64-8b79-7f6c85baf4f6').removeClass('collapsed')
+            $('#collapse-85fcc9d3-0060-4c64-8b79-7f6c85baf4f6').removeClass('collapsed')
+            $('#requests-85fcc9d3-0060-4c64-8b79-7f6c85baf4f6').addClass('show')
+            $('#collapse-85fcc9d3-0060-4c64-8b79-7f6c85baf4f6').addClass('show')
+        $('#openAllRequests').html("Collapse Requests");
+        break;
+    case 2:
+            $('#requests-006ac4fe-ea14-4ba1-832e-d47aa49d2dc9').addClass('collapsed')
+            $('#collapse-006ac4fe-ea14-4ba1-832e-d47aa49d2dc9').addClass('collapsed')
+            $('#requests-006ac4fe-ea14-4ba1-832e-d47aa49d2dc9').removeClass('show')
+            $('#collapse-006ac4fe-ea14-4ba1-832e-d47aa49d2dc9').removeClass('show')
+            $('#requests-2cea6445-e032-4925-924c-63387bbf3f63').addClass('collapsed')
+            $('#collapse-2cea6445-e032-4925-924c-63387bbf3f63').addClass('collapsed')
+            $('#requests-2cea6445-e032-4925-924c-63387bbf3f63').removeClass('show')
+            $('#collapse-2cea6445-e032-4925-924c-63387bbf3f63').removeClass('show')
+            $('#requests-e2ff3965-9b1f-4076-b00e-c5818c3ac1cb').addClass('collapsed')
+            $('#collapse-e2ff3965-9b1f-4076-b00e-c5818c3ac1cb').addClass('collapsed')
+            $('#requests-e2ff3965-9b1f-4076-b00e-c5818c3ac1cb').removeClass('show')
+            $('#collapse-e2ff3965-9b1f-4076-b00e-c5818c3ac1cb').removeClass('show')
+            $('#requests-5c1689f7-5314-436c-98ca-e2873301d377').addClass('collapsed')
+            $('#collapse-5c1689f7-5314-436c-98ca-e2873301d377').addClass('collapsed')
+            $('#requests-5c1689f7-5314-436c-98ca-e2873301d377').removeClass('show')
+            $('#collapse-5c1689f7-5314-436c-98ca-e2873301d377').removeClass('show')
+            $('#requests-1407f439-65ca-4a84-994a-c8e7f6c534e0').addClass('collapsed')
+            $('#collapse-1407f439-65ca-4a84-994a-c8e7f6c534e0').addClass('collapsed')
+            $('#requests-1407f439-65ca-4a84-994a-c8e7f6c534e0').removeClass('show')
+            $('#collapse-1407f439-65ca-4a84-994a-c8e7f6c534e0').removeClass('show')
+            $('#requests-d80a102b-620b-4399-9b58-42ed5924ee31').addClass('collapsed')
+            $('#collapse-d80a102b-620b-4399-9b58-42ed5924ee31').addClass('collapsed')
+            $('#requests-d80a102b-620b-4399-9b58-42ed5924ee31').removeClass('show')
+            $('#collapse-d80a102b-620b-4399-9b58-42ed5924ee31').removeClass('show')
+            $('#requests-ec0e6fc4-987a-4148-8d98-8c6713963063').addClass('collapsed')
+            $('#collapse-ec0e6fc4-987a-4148-8d98-8c6713963063').addClass('collapsed')
+            $('#requests-ec0e6fc4-987a-4148-8d98-8c6713963063').removeClass('show')
+            $('#collapse-ec0e6fc4-987a-4148-8d98-8c6713963063').removeClass('show')
+            $('#requests-3374908a-358d-4abb-97a2-25109b6e7ebb').addClass('collapsed')
+            $('#collapse-3374908a-358d-4abb-97a2-25109b6e7ebb').addClass('collapsed')
+            $('#requests-3374908a-358d-4abb-97a2-25109b6e7ebb').removeClass('show')
+            $('#collapse-3374908a-358d-4abb-97a2-25109b6e7ebb').removeClass('show')
+            $('#requests-a1639f4e-a973-42d4-8cba-9dc8fc226a03').addClass('collapsed')
+            $('#collapse-a1639f4e-a973-42d4-8cba-9dc8fc226a03').addClass('collapsed')
+            $('#requests-a1639f4e-a973-42d4-8cba-9dc8fc226a03').removeClass('show')
+            $('#collapse-a1639f4e-a973-42d4-8cba-9dc8fc226a03').removeClass('show')
+            $('#requests-15c0a7fb-60a7-42ae-9553-c95966b97a76').addClass('collapsed')
+            $('#collapse-15c0a7fb-60a7-42ae-9553-c95966b97a76').addClass('collapsed')
+            $('#requests-15c0a7fb-60a7-42ae-9553-c95966b97a76').removeClass('show')
+            $('#collapse-15c0a7fb-60a7-42ae-9553-c95966b97a76').removeClass('show')
+            $('#requests-ecefb86f-f6b8-4156-8f92-12f7e0154552').addClass('collapsed')
+            $('#collapse-ecefb86f-f6b8-4156-8f92-12f7e0154552').addClass('collapsed')
+            $('#requests-ecefb86f-f6b8-4156-8f92-12f7e0154552').removeClass('show')
+            $('#collapse-ecefb86f-f6b8-4156-8f92-12f7e0154552').removeClass('show')
+            $('#requests-b481dcb3-9d19-441d-a724-c528eb6ecb9c').addClass('collapsed')
+            $('#collapse-b481dcb3-9d19-441d-a724-c528eb6ecb9c').addClass('collapsed')
+            $('#requests-b481dcb3-9d19-441d-a724-c528eb6ecb9c').removeClass('show')
+            $('#collapse-b481dcb3-9d19-441d-a724-c528eb6ecb9c').removeClass('show')
+            $('#requests-6c2989da-5d99-47c7-b2e1-154fce0ab978').addClass('collapsed')
+            $('#collapse-6c2989da-5d99-47c7-b2e1-154fce0ab978').addClass('collapsed')
+            $('#requests-6c2989da-5d99-47c7-b2e1-154fce0ab978').removeClass('show')
+            $('#collapse-6c2989da-5d99-47c7-b2e1-154fce0ab978').removeClass('show')
+            $('#requests-b8f4b52c-d812-45e4-b50c-c18c7e6f3ccc').addClass('collapsed')
+            $('#collapse-b8f4b52c-d812-45e4-b50c-c18c7e6f3ccc').addClass('collapsed')
+            $('#requests-b8f4b52c-d812-45e4-b50c-c18c7e6f3ccc').removeClass('show')
+            $('#collapse-b8f4b52c-d812-45e4-b50c-c18c7e6f3ccc').removeClass('show')
+            $('#requests-153c7755-1435-440e-a13a-8cd571c0b762').addClass('collapsed')
+            $('#collapse-153c7755-1435-440e-a13a-8cd571c0b762').addClass('collapsed')
+            $('#requests-153c7755-1435-440e-a13a-8cd571c0b762').removeClass('show')
+            $('#collapse-153c7755-1435-440e-a13a-8cd571c0b762').removeClass('show')
+            $('#requests-1f20eae5-91b9-4914-891c-a2fb3e58253b').addClass('collapsed')
+            $('#collapse-1f20eae5-91b9-4914-891c-a2fb3e58253b').addClass('collapsed')
+            $('#requests-1f20eae5-91b9-4914-891c-a2fb3e58253b').removeClass('show')
+            $('#collapse-1f20eae5-91b9-4914-891c-a2fb3e58253b').removeClass('show')
+            $('#requests-dc1ed038-7b90-4553-b1ed-492e53a08975').addClass('collapsed')
+            $('#collapse-dc1ed038-7b90-4553-b1ed-492e53a08975').addClass('collapsed')
+            $('#requests-dc1ed038-7b90-4553-b1ed-492e53a08975').removeClass('show')
+            $('#collapse-dc1ed038-7b90-4553-b1ed-492e53a08975').removeClass('show')
+            $('#requests-8ebafe9e-7add-4e10-9278-515b48a7628a').addClass('collapsed')
+            $('#collapse-8ebafe9e-7add-4e10-9278-515b48a7628a').addClass('collapsed')
+            $('#requests-8ebafe9e-7add-4e10-9278-515b48a7628a').removeClass('show')
+            $('#collapse-8ebafe9e-7add-4e10-9278-515b48a7628a').removeClass('show')
+            $('#requests-6053eca1-848f-40e8-90ba-d7829c26e86d').addClass('collapsed')
+            $('#collapse-6053eca1-848f-40e8-90ba-d7829c26e86d').addClass('collapsed')
+            $('#requests-6053eca1-848f-40e8-90ba-d7829c26e86d').removeClass('show')
+            $('#collapse-6053eca1-848f-40e8-90ba-d7829c26e86d').removeClass('show')
+            $('#requests-6e24f905-ab27-4392-9503-29b8c0d5abca').addClass('collapsed')
+            $('#collapse-6e24f905-ab27-4392-9503-29b8c0d5abca').addClass('collapsed')
+            $('#requests-6e24f905-ab27-4392-9503-29b8c0d5abca').removeClass('show')
+            $('#collapse-6e24f905-ab27-4392-9503-29b8c0d5abca').removeClass('show')
+            $('#requests-161bd2d5-c21a-40a5-a55a-a621c2d7bf45').addClass('collapsed')
+            $('#collapse-161bd2d5-c21a-40a5-a55a-a621c2d7bf45').addClass('collapsed')
+            $('#requests-161bd2d5-c21a-40a5-a55a-a621c2d7bf45').removeClass('show')
+            $('#collapse-161bd2d5-c21a-40a5-a55a-a621c2d7bf45').removeClass('show')
+            $('#requests-76f85fd4-db0c-4b72-980f-455d22215295').addClass('collapsed')
+            $('#collapse-76f85fd4-db0c-4b72-980f-455d22215295').addClass('collapsed')
+            $('#requests-76f85fd4-db0c-4b72-980f-455d22215295').removeClass('show')
+            $('#collapse-76f85fd4-db0c-4b72-980f-455d22215295').removeClass('show')
+            $('#requests-d777973c-5824-4980-ba86-b1a0dae9f08b').addClass('collapsed')
+            $('#collapse-d777973c-5824-4980-ba86-b1a0dae9f08b').addClass('collapsed')
+            $('#requests-d777973c-5824-4980-ba86-b1a0dae9f08b').removeClass('show')
+            $('#collapse-d777973c-5824-4980-ba86-b1a0dae9f08b').removeClass('show')
+            $('#requests-f8db37dd-2819-4695-a70a-3376bef7a38a').addClass('collapsed')
+            $('#collapse-f8db37dd-2819-4695-a70a-3376bef7a38a').addClass('collapsed')
+            $('#requests-f8db37dd-2819-4695-a70a-3376bef7a38a').removeClass('show')
+            $('#collapse-f8db37dd-2819-4695-a70a-3376bef7a38a').removeClass('show')
+            $('#requests-b4a275fb-5228-4630-b384-2fef93bef4e4').addClass('collapsed')
+            $('#collapse-b4a275fb-5228-4630-b384-2fef93bef4e4').addClass('collapsed')
+            $('#requests-b4a275fb-5228-4630-b384-2fef93bef4e4').removeClass('show')
+            $('#collapse-b4a275fb-5228-4630-b384-2fef93bef4e4').removeClass('show')
+            $('#requests-62436abc-c24b-413c-b0a6-8655dffdac1d').addClass('collapsed')
+            $('#collapse-62436abc-c24b-413c-b0a6-8655dffdac1d').addClass('collapsed')
+            $('#requests-62436abc-c24b-413c-b0a6-8655dffdac1d').removeClass('show')
+            $('#collapse-62436abc-c24b-413c-b0a6-8655dffdac1d').removeClass('show')
+            $('#requests-07bbcbf7-2dfb-4c32-8a9f-23b13283c836').addClass('collapsed')
+            $('#collapse-07bbcbf7-2dfb-4c32-8a9f-23b13283c836').addClass('collapsed')
+            $('#requests-07bbcbf7-2dfb-4c32-8a9f-23b13283c836').removeClass('show')
+            $('#collapse-07bbcbf7-2dfb-4c32-8a9f-23b13283c836').removeClass('show')
+            $('#requests-c472fbec-066d-4a68-ae3a-26cfecdf782f').addClass('collapsed')
+            $('#collapse-c472fbec-066d-4a68-ae3a-26cfecdf782f').addClass('collapsed')
+            $('#requests-c472fbec-066d-4a68-ae3a-26cfecdf782f').removeClass('show')
+            $('#collapse-c472fbec-066d-4a68-ae3a-26cfecdf782f').removeClass('show')
+            $('#requests-7f040cf5-c7b5-4a40-a277-8e4839304325').addClass('collapsed')
+            $('#collapse-7f040cf5-c7b5-4a40-a277-8e4839304325').addClass('collapsed')
+            $('#requests-7f040cf5-c7b5-4a40-a277-8e4839304325').removeClass('show')
+            $('#collapse-7f040cf5-c7b5-4a40-a277-8e4839304325').removeClass('show')
+            $('#requests-7fa0487a-c416-4041-b8b2-123349352d01').addClass('collapsed')
+            $('#collapse-7fa0487a-c416-4041-b8b2-123349352d01').addClass('collapsed')
+            $('#requests-7fa0487a-c416-4041-b8b2-123349352d01').removeClass('show')
+            $('#collapse-7fa0487a-c416-4041-b8b2-123349352d01').removeClass('show')
+            $('#requests-0fa89d36-d5ab-485d-bfda-e54756c18a5e').addClass('collapsed')
+            $('#collapse-0fa89d36-d5ab-485d-bfda-e54756c18a5e').addClass('collapsed')
+            $('#requests-0fa89d36-d5ab-485d-bfda-e54756c18a5e').removeClass('show')
+            $('#collapse-0fa89d36-d5ab-485d-bfda-e54756c18a5e').removeClass('show')
+            $('#requests-f71ded0f-0c5f-4495-bcec-dd03e7ea125a').addClass('collapsed')
+            $('#collapse-f71ded0f-0c5f-4495-bcec-dd03e7ea125a').addClass('collapsed')
+            $('#requests-f71ded0f-0c5f-4495-bcec-dd03e7ea125a').removeClass('show')
+            $('#collapse-f71ded0f-0c5f-4495-bcec-dd03e7ea125a').removeClass('show')
+            $('#requests-7bb2bfb1-d429-4609-8159-f5119841c02f').addClass('collapsed')
+            $('#collapse-7bb2bfb1-d429-4609-8159-f5119841c02f').addClass('collapsed')
+            $('#requests-7bb2bfb1-d429-4609-8159-f5119841c02f').removeClass('show')
+            $('#collapse-7bb2bfb1-d429-4609-8159-f5119841c02f').removeClass('show')
+            $('#requests-42910891-78d7-42f9-9345-dcc2c88ec823').addClass('collapsed')
+            $('#collapse-42910891-78d7-42f9-9345-dcc2c88ec823').addClass('collapsed')
+            $('#requests-42910891-78d7-42f9-9345-dcc2c88ec823').removeClass('show')
+            $('#collapse-42910891-78d7-42f9-9345-dcc2c88ec823').removeClass('show')
+            $('#requests-1f5ef5a2-6a33-4dbf-baba-40bff8093119').addClass('collapsed')
+            $('#collapse-1f5ef5a2-6a33-4dbf-baba-40bff8093119').addClass('collapsed')
+            $('#requests-1f5ef5a2-6a33-4dbf-baba-40bff8093119').removeClass('show')
+            $('#collapse-1f5ef5a2-6a33-4dbf-baba-40bff8093119').removeClass('show')
+            $('#requests-3f12ba1a-a6e9-4faa-9676-25af7f2c2ddf').addClass('collapsed')
+            $('#collapse-3f12ba1a-a6e9-4faa-9676-25af7f2c2ddf').addClass('collapsed')
+            $('#requests-3f12ba1a-a6e9-4faa-9676-25af7f2c2ddf').removeClass('show')
+            $('#collapse-3f12ba1a-a6e9-4faa-9676-25af7f2c2ddf').removeClass('show')
+            $('#requests-4078b356-53a2-4df6-9e54-c867b31b2934').addClass('collapsed')
+            $('#collapse-4078b356-53a2-4df6-9e54-c867b31b2934').addClass('collapsed')
+            $('#requests-4078b356-53a2-4df6-9e54-c867b31b2934').removeClass('show')
+            $('#collapse-4078b356-53a2-4df6-9e54-c867b31b2934').removeClass('show')
+            $('#requests-e9ac216c-8e99-4eb9-afa4-0abcd7a99edf').addClass('collapsed')
+            $('#collapse-e9ac216c-8e99-4eb9-afa4-0abcd7a99edf').addClass('collapsed')
+            $('#requests-e9ac216c-8e99-4eb9-afa4-0abcd7a99edf').removeClass('show')
+            $('#collapse-e9ac216c-8e99-4eb9-afa4-0abcd7a99edf').removeClass('show')
+            $('#requests-52be58e9-1fa0-4c25-a2b2-989d6abfcdb1').addClass('collapsed')
+            $('#collapse-52be58e9-1fa0-4c25-a2b2-989d6abfcdb1').addClass('collapsed')
+            $('#requests-52be58e9-1fa0-4c25-a2b2-989d6abfcdb1').removeClass('show')
+            $('#collapse-52be58e9-1fa0-4c25-a2b2-989d6abfcdb1').removeClass('show')
+            $('#requests-a9ebd125-3d5f-4c83-9687-b41715512c2d').addClass('collapsed')
+            $('#collapse-a9ebd125-3d5f-4c83-9687-b41715512c2d').addClass('collapsed')
+            $('#requests-a9ebd125-3d5f-4c83-9687-b41715512c2d').removeClass('show')
+            $('#collapse-a9ebd125-3d5f-4c83-9687-b41715512c2d').removeClass('show')
+            $('#requests-504de2e7-17ce-45a7-8f1e-6e03beef5a81').addClass('collapsed')
+            $('#collapse-504de2e7-17ce-45a7-8f1e-6e03beef5a81').addClass('collapsed')
+            $('#requests-504de2e7-17ce-45a7-8f1e-6e03beef5a81').removeClass('show')
+            $('#collapse-504de2e7-17ce-45a7-8f1e-6e03beef5a81').removeClass('show')
+            $('#requests-7579edee-9aaa-4b61-a921-d13350035be2').addClass('collapsed')
+            $('#collapse-7579edee-9aaa-4b61-a921-d13350035be2').addClass('collapsed')
+            $('#requests-7579edee-9aaa-4b61-a921-d13350035be2').removeClass('show')
+            $('#collapse-7579edee-9aaa-4b61-a921-d13350035be2').removeClass('show')
+            $('#requests-ab0636b9-56c4-4f6f-9359-720367a44fd2').addClass('collapsed')
+            $('#collapse-ab0636b9-56c4-4f6f-9359-720367a44fd2').addClass('collapsed')
+            $('#requests-ab0636b9-56c4-4f6f-9359-720367a44fd2').removeClass('show')
+            $('#collapse-ab0636b9-56c4-4f6f-9359-720367a44fd2').removeClass('show')
+            $('#requests-85fcc9d3-0060-4c64-8b79-7f6c85baf4f6').addClass('collapsed')
+            $('#collapse-85fcc9d3-0060-4c64-8b79-7f6c85baf4f6').addClass('collapsed')
+            $('#requests-85fcc9d3-0060-4c64-8b79-7f6c85baf4f6').removeClass('show')
+            $('#collapse-85fcc9d3-0060-4c64-8b79-7f6c85baf4f6').removeClass('show')
+        $('#openAllRequests').html("Expand Requests");
+        break;
+}
+clickCount = clickCount > 1 ? 1 : ++clickCount;
+$(this).data("clickCount", clickCount)
+})
+</script>
+
+<!-- Show/Hide The Skipped Tests -->
+
+<script>
+$('#openAllSkipped').on('click', function(e) {
+let clickCount = $(this).data("clickCount") || 1
+switch (clickCount){
+    case 1:
+            $('#skipped-006ac4fe-ea14-4ba1-832e-d47aa49d2dc9').removeClass('collapsed')
+            $('#skipped-collapse-006ac4fe-ea14-4ba1-832e-d47aa49d2dc9').removeClass('collapsed')
+            $('#skipped-006ac4fe-ea14-4ba1-832e-d47aa49d2dc9').addClass('show')
+            $('#skipped-collapse-006ac4fe-ea14-4ba1-832e-d47aa49d2dc9').addClass('show')
+            $('#skipped-2cea6445-e032-4925-924c-63387bbf3f63').removeClass('collapsed')
+            $('#skipped-collapse-2cea6445-e032-4925-924c-63387bbf3f63').removeClass('collapsed')
+            $('#skipped-2cea6445-e032-4925-924c-63387bbf3f63').addClass('show')
+            $('#skipped-collapse-2cea6445-e032-4925-924c-63387bbf3f63').addClass('show')
+            $('#skipped-e2ff3965-9b1f-4076-b00e-c5818c3ac1cb').removeClass('collapsed')
+            $('#skipped-collapse-e2ff3965-9b1f-4076-b00e-c5818c3ac1cb').removeClass('collapsed')
+            $('#skipped-e2ff3965-9b1f-4076-b00e-c5818c3ac1cb').addClass('show')
+            $('#skipped-collapse-e2ff3965-9b1f-4076-b00e-c5818c3ac1cb').addClass('show')
+            $('#skipped-5c1689f7-5314-436c-98ca-e2873301d377').removeClass('collapsed')
+            $('#skipped-collapse-5c1689f7-5314-436c-98ca-e2873301d377').removeClass('collapsed')
+            $('#skipped-5c1689f7-5314-436c-98ca-e2873301d377').addClass('show')
+            $('#skipped-collapse-5c1689f7-5314-436c-98ca-e2873301d377').addClass('show')
+            $('#skipped-1407f439-65ca-4a84-994a-c8e7f6c534e0').removeClass('collapsed')
+            $('#skipped-collapse-1407f439-65ca-4a84-994a-c8e7f6c534e0').removeClass('collapsed')
+            $('#skipped-1407f439-65ca-4a84-994a-c8e7f6c534e0').addClass('show')
+            $('#skipped-collapse-1407f439-65ca-4a84-994a-c8e7f6c534e0').addClass('show')
+            $('#skipped-d80a102b-620b-4399-9b58-42ed5924ee31').removeClass('collapsed')
+            $('#skipped-collapse-d80a102b-620b-4399-9b58-42ed5924ee31').removeClass('collapsed')
+            $('#skipped-d80a102b-620b-4399-9b58-42ed5924ee31').addClass('show')
+            $('#skipped-collapse-d80a102b-620b-4399-9b58-42ed5924ee31').addClass('show')
+            $('#skipped-ec0e6fc4-987a-4148-8d98-8c6713963063').removeClass('collapsed')
+            $('#skipped-collapse-ec0e6fc4-987a-4148-8d98-8c6713963063').removeClass('collapsed')
+            $('#skipped-ec0e6fc4-987a-4148-8d98-8c6713963063').addClass('show')
+            $('#skipped-collapse-ec0e6fc4-987a-4148-8d98-8c6713963063').addClass('show')
+            $('#skipped-3374908a-358d-4abb-97a2-25109b6e7ebb').removeClass('collapsed')
+            $('#skipped-collapse-3374908a-358d-4abb-97a2-25109b6e7ebb').removeClass('collapsed')
+            $('#skipped-3374908a-358d-4abb-97a2-25109b6e7ebb').addClass('show')
+            $('#skipped-collapse-3374908a-358d-4abb-97a2-25109b6e7ebb').addClass('show')
+            $('#skipped-a1639f4e-a973-42d4-8cba-9dc8fc226a03').removeClass('collapsed')
+            $('#skipped-collapse-a1639f4e-a973-42d4-8cba-9dc8fc226a03').removeClass('collapsed')
+            $('#skipped-a1639f4e-a973-42d4-8cba-9dc8fc226a03').addClass('show')
+            $('#skipped-collapse-a1639f4e-a973-42d4-8cba-9dc8fc226a03').addClass('show')
+            $('#skipped-15c0a7fb-60a7-42ae-9553-c95966b97a76').removeClass('collapsed')
+            $('#skipped-collapse-15c0a7fb-60a7-42ae-9553-c95966b97a76').removeClass('collapsed')
+            $('#skipped-15c0a7fb-60a7-42ae-9553-c95966b97a76').addClass('show')
+            $('#skipped-collapse-15c0a7fb-60a7-42ae-9553-c95966b97a76').addClass('show')
+            $('#skipped-ecefb86f-f6b8-4156-8f92-12f7e0154552').removeClass('collapsed')
+            $('#skipped-collapse-ecefb86f-f6b8-4156-8f92-12f7e0154552').removeClass('collapsed')
+            $('#skipped-ecefb86f-f6b8-4156-8f92-12f7e0154552').addClass('show')
+            $('#skipped-collapse-ecefb86f-f6b8-4156-8f92-12f7e0154552').addClass('show')
+            $('#skipped-b481dcb3-9d19-441d-a724-c528eb6ecb9c').removeClass('collapsed')
+            $('#skipped-collapse-b481dcb3-9d19-441d-a724-c528eb6ecb9c').removeClass('collapsed')
+            $('#skipped-b481dcb3-9d19-441d-a724-c528eb6ecb9c').addClass('show')
+            $('#skipped-collapse-b481dcb3-9d19-441d-a724-c528eb6ecb9c').addClass('show')
+            $('#skipped-6c2989da-5d99-47c7-b2e1-154fce0ab978').removeClass('collapsed')
+            $('#skipped-collapse-6c2989da-5d99-47c7-b2e1-154fce0ab978').removeClass('collapsed')
+            $('#skipped-6c2989da-5d99-47c7-b2e1-154fce0ab978').addClass('show')
+            $('#skipped-collapse-6c2989da-5d99-47c7-b2e1-154fce0ab978').addClass('show')
+            $('#skipped-b8f4b52c-d812-45e4-b50c-c18c7e6f3ccc').removeClass('collapsed')
+            $('#skipped-collapse-b8f4b52c-d812-45e4-b50c-c18c7e6f3ccc').removeClass('collapsed')
+            $('#skipped-b8f4b52c-d812-45e4-b50c-c18c7e6f3ccc').addClass('show')
+            $('#skipped-collapse-b8f4b52c-d812-45e4-b50c-c18c7e6f3ccc').addClass('show')
+            $('#skipped-153c7755-1435-440e-a13a-8cd571c0b762').removeClass('collapsed')
+            $('#skipped-collapse-153c7755-1435-440e-a13a-8cd571c0b762').removeClass('collapsed')
+            $('#skipped-153c7755-1435-440e-a13a-8cd571c0b762').addClass('show')
+            $('#skipped-collapse-153c7755-1435-440e-a13a-8cd571c0b762').addClass('show')
+            $('#skipped-1f20eae5-91b9-4914-891c-a2fb3e58253b').removeClass('collapsed')
+            $('#skipped-collapse-1f20eae5-91b9-4914-891c-a2fb3e58253b').removeClass('collapsed')
+            $('#skipped-1f20eae5-91b9-4914-891c-a2fb3e58253b').addClass('show')
+            $('#skipped-collapse-1f20eae5-91b9-4914-891c-a2fb3e58253b').addClass('show')
+            $('#skipped-dc1ed038-7b90-4553-b1ed-492e53a08975').removeClass('collapsed')
+            $('#skipped-collapse-dc1ed038-7b90-4553-b1ed-492e53a08975').removeClass('collapsed')
+            $('#skipped-dc1ed038-7b90-4553-b1ed-492e53a08975').addClass('show')
+            $('#skipped-collapse-dc1ed038-7b90-4553-b1ed-492e53a08975').addClass('show')
+            $('#skipped-8ebafe9e-7add-4e10-9278-515b48a7628a').removeClass('collapsed')
+            $('#skipped-collapse-8ebafe9e-7add-4e10-9278-515b48a7628a').removeClass('collapsed')
+            $('#skipped-8ebafe9e-7add-4e10-9278-515b48a7628a').addClass('show')
+            $('#skipped-collapse-8ebafe9e-7add-4e10-9278-515b48a7628a').addClass('show')
+            $('#skipped-6053eca1-848f-40e8-90ba-d7829c26e86d').removeClass('collapsed')
+            $('#skipped-collapse-6053eca1-848f-40e8-90ba-d7829c26e86d').removeClass('collapsed')
+            $('#skipped-6053eca1-848f-40e8-90ba-d7829c26e86d').addClass('show')
+            $('#skipped-collapse-6053eca1-848f-40e8-90ba-d7829c26e86d').addClass('show')
+            $('#skipped-6e24f905-ab27-4392-9503-29b8c0d5abca').removeClass('collapsed')
+            $('#skipped-collapse-6e24f905-ab27-4392-9503-29b8c0d5abca').removeClass('collapsed')
+            $('#skipped-6e24f905-ab27-4392-9503-29b8c0d5abca').addClass('show')
+            $('#skipped-collapse-6e24f905-ab27-4392-9503-29b8c0d5abca').addClass('show')
+            $('#skipped-161bd2d5-c21a-40a5-a55a-a621c2d7bf45').removeClass('collapsed')
+            $('#skipped-collapse-161bd2d5-c21a-40a5-a55a-a621c2d7bf45').removeClass('collapsed')
+            $('#skipped-161bd2d5-c21a-40a5-a55a-a621c2d7bf45').addClass('show')
+            $('#skipped-collapse-161bd2d5-c21a-40a5-a55a-a621c2d7bf45').addClass('show')
+            $('#skipped-76f85fd4-db0c-4b72-980f-455d22215295').removeClass('collapsed')
+            $('#skipped-collapse-76f85fd4-db0c-4b72-980f-455d22215295').removeClass('collapsed')
+            $('#skipped-76f85fd4-db0c-4b72-980f-455d22215295').addClass('show')
+            $('#skipped-collapse-76f85fd4-db0c-4b72-980f-455d22215295').addClass('show')
+            $('#skipped-d777973c-5824-4980-ba86-b1a0dae9f08b').removeClass('collapsed')
+            $('#skipped-collapse-d777973c-5824-4980-ba86-b1a0dae9f08b').removeClass('collapsed')
+            $('#skipped-d777973c-5824-4980-ba86-b1a0dae9f08b').addClass('show')
+            $('#skipped-collapse-d777973c-5824-4980-ba86-b1a0dae9f08b').addClass('show')
+            $('#skipped-f8db37dd-2819-4695-a70a-3376bef7a38a').removeClass('collapsed')
+            $('#skipped-collapse-f8db37dd-2819-4695-a70a-3376bef7a38a').removeClass('collapsed')
+            $('#skipped-f8db37dd-2819-4695-a70a-3376bef7a38a').addClass('show')
+            $('#skipped-collapse-f8db37dd-2819-4695-a70a-3376bef7a38a').addClass('show')
+            $('#skipped-b4a275fb-5228-4630-b384-2fef93bef4e4').removeClass('collapsed')
+            $('#skipped-collapse-b4a275fb-5228-4630-b384-2fef93bef4e4').removeClass('collapsed')
+            $('#skipped-b4a275fb-5228-4630-b384-2fef93bef4e4').addClass('show')
+            $('#skipped-collapse-b4a275fb-5228-4630-b384-2fef93bef4e4').addClass('show')
+            $('#skipped-62436abc-c24b-413c-b0a6-8655dffdac1d').removeClass('collapsed')
+            $('#skipped-collapse-62436abc-c24b-413c-b0a6-8655dffdac1d').removeClass('collapsed')
+            $('#skipped-62436abc-c24b-413c-b0a6-8655dffdac1d').addClass('show')
+            $('#skipped-collapse-62436abc-c24b-413c-b0a6-8655dffdac1d').addClass('show')
+            $('#skipped-07bbcbf7-2dfb-4c32-8a9f-23b13283c836').removeClass('collapsed')
+            $('#skipped-collapse-07bbcbf7-2dfb-4c32-8a9f-23b13283c836').removeClass('collapsed')
+            $('#skipped-07bbcbf7-2dfb-4c32-8a9f-23b13283c836').addClass('show')
+            $('#skipped-collapse-07bbcbf7-2dfb-4c32-8a9f-23b13283c836').addClass('show')
+            $('#skipped-c472fbec-066d-4a68-ae3a-26cfecdf782f').removeClass('collapsed')
+            $('#skipped-collapse-c472fbec-066d-4a68-ae3a-26cfecdf782f').removeClass('collapsed')
+            $('#skipped-c472fbec-066d-4a68-ae3a-26cfecdf782f').addClass('show')
+            $('#skipped-collapse-c472fbec-066d-4a68-ae3a-26cfecdf782f').addClass('show')
+            $('#skipped-7f040cf5-c7b5-4a40-a277-8e4839304325').removeClass('collapsed')
+            $('#skipped-collapse-7f040cf5-c7b5-4a40-a277-8e4839304325').removeClass('collapsed')
+            $('#skipped-7f040cf5-c7b5-4a40-a277-8e4839304325').addClass('show')
+            $('#skipped-collapse-7f040cf5-c7b5-4a40-a277-8e4839304325').addClass('show')
+            $('#skipped-7fa0487a-c416-4041-b8b2-123349352d01').removeClass('collapsed')
+            $('#skipped-collapse-7fa0487a-c416-4041-b8b2-123349352d01').removeClass('collapsed')
+            $('#skipped-7fa0487a-c416-4041-b8b2-123349352d01').addClass('show')
+            $('#skipped-collapse-7fa0487a-c416-4041-b8b2-123349352d01').addClass('show')
+            $('#skipped-0fa89d36-d5ab-485d-bfda-e54756c18a5e').removeClass('collapsed')
+            $('#skipped-collapse-0fa89d36-d5ab-485d-bfda-e54756c18a5e').removeClass('collapsed')
+            $('#skipped-0fa89d36-d5ab-485d-bfda-e54756c18a5e').addClass('show')
+            $('#skipped-collapse-0fa89d36-d5ab-485d-bfda-e54756c18a5e').addClass('show')
+            $('#skipped-f71ded0f-0c5f-4495-bcec-dd03e7ea125a').removeClass('collapsed')
+            $('#skipped-collapse-f71ded0f-0c5f-4495-bcec-dd03e7ea125a').removeClass('collapsed')
+            $('#skipped-f71ded0f-0c5f-4495-bcec-dd03e7ea125a').addClass('show')
+            $('#skipped-collapse-f71ded0f-0c5f-4495-bcec-dd03e7ea125a').addClass('show')
+            $('#skipped-7bb2bfb1-d429-4609-8159-f5119841c02f').removeClass('collapsed')
+            $('#skipped-collapse-7bb2bfb1-d429-4609-8159-f5119841c02f').removeClass('collapsed')
+            $('#skipped-7bb2bfb1-d429-4609-8159-f5119841c02f').addClass('show')
+            $('#skipped-collapse-7bb2bfb1-d429-4609-8159-f5119841c02f').addClass('show')
+            $('#skipped-42910891-78d7-42f9-9345-dcc2c88ec823').removeClass('collapsed')
+            $('#skipped-collapse-42910891-78d7-42f9-9345-dcc2c88ec823').removeClass('collapsed')
+            $('#skipped-42910891-78d7-42f9-9345-dcc2c88ec823').addClass('show')
+            $('#skipped-collapse-42910891-78d7-42f9-9345-dcc2c88ec823').addClass('show')
+            $('#skipped-1f5ef5a2-6a33-4dbf-baba-40bff8093119').removeClass('collapsed')
+            $('#skipped-collapse-1f5ef5a2-6a33-4dbf-baba-40bff8093119').removeClass('collapsed')
+            $('#skipped-1f5ef5a2-6a33-4dbf-baba-40bff8093119').addClass('show')
+            $('#skipped-collapse-1f5ef5a2-6a33-4dbf-baba-40bff8093119').addClass('show')
+            $('#skipped-3f12ba1a-a6e9-4faa-9676-25af7f2c2ddf').removeClass('collapsed')
+            $('#skipped-collapse-3f12ba1a-a6e9-4faa-9676-25af7f2c2ddf').removeClass('collapsed')
+            $('#skipped-3f12ba1a-a6e9-4faa-9676-25af7f2c2ddf').addClass('show')
+            $('#skipped-collapse-3f12ba1a-a6e9-4faa-9676-25af7f2c2ddf').addClass('show')
+            $('#skipped-4078b356-53a2-4df6-9e54-c867b31b2934').removeClass('collapsed')
+            $('#skipped-collapse-4078b356-53a2-4df6-9e54-c867b31b2934').removeClass('collapsed')
+            $('#skipped-4078b356-53a2-4df6-9e54-c867b31b2934').addClass('show')
+            $('#skipped-collapse-4078b356-53a2-4df6-9e54-c867b31b2934').addClass('show')
+            $('#skipped-e9ac216c-8e99-4eb9-afa4-0abcd7a99edf').removeClass('collapsed')
+            $('#skipped-collapse-e9ac216c-8e99-4eb9-afa4-0abcd7a99edf').removeClass('collapsed')
+            $('#skipped-e9ac216c-8e99-4eb9-afa4-0abcd7a99edf').addClass('show')
+            $('#skipped-collapse-e9ac216c-8e99-4eb9-afa4-0abcd7a99edf').addClass('show')
+            $('#skipped-52be58e9-1fa0-4c25-a2b2-989d6abfcdb1').removeClass('collapsed')
+            $('#skipped-collapse-52be58e9-1fa0-4c25-a2b2-989d6abfcdb1').removeClass('collapsed')
+            $('#skipped-52be58e9-1fa0-4c25-a2b2-989d6abfcdb1').addClass('show')
+            $('#skipped-collapse-52be58e9-1fa0-4c25-a2b2-989d6abfcdb1').addClass('show')
+            $('#skipped-a9ebd125-3d5f-4c83-9687-b41715512c2d').removeClass('collapsed')
+            $('#skipped-collapse-a9ebd125-3d5f-4c83-9687-b41715512c2d').removeClass('collapsed')
+            $('#skipped-a9ebd125-3d5f-4c83-9687-b41715512c2d').addClass('show')
+            $('#skipped-collapse-a9ebd125-3d5f-4c83-9687-b41715512c2d').addClass('show')
+            $('#skipped-504de2e7-17ce-45a7-8f1e-6e03beef5a81').removeClass('collapsed')
+            $('#skipped-collapse-504de2e7-17ce-45a7-8f1e-6e03beef5a81').removeClass('collapsed')
+            $('#skipped-504de2e7-17ce-45a7-8f1e-6e03beef5a81').addClass('show')
+            $('#skipped-collapse-504de2e7-17ce-45a7-8f1e-6e03beef5a81').addClass('show')
+            $('#skipped-7579edee-9aaa-4b61-a921-d13350035be2').removeClass('collapsed')
+            $('#skipped-collapse-7579edee-9aaa-4b61-a921-d13350035be2').removeClass('collapsed')
+            $('#skipped-7579edee-9aaa-4b61-a921-d13350035be2').addClass('show')
+            $('#skipped-collapse-7579edee-9aaa-4b61-a921-d13350035be2').addClass('show')
+            $('#skipped-ab0636b9-56c4-4f6f-9359-720367a44fd2').removeClass('collapsed')
+            $('#skipped-collapse-ab0636b9-56c4-4f6f-9359-720367a44fd2').removeClass('collapsed')
+            $('#skipped-ab0636b9-56c4-4f6f-9359-720367a44fd2').addClass('show')
+            $('#skipped-collapse-ab0636b9-56c4-4f6f-9359-720367a44fd2').addClass('show')
+            $('#skipped-85fcc9d3-0060-4c64-8b79-7f6c85baf4f6').removeClass('collapsed')
+            $('#skipped-collapse-85fcc9d3-0060-4c64-8b79-7f6c85baf4f6').removeClass('collapsed')
+            $('#skipped-85fcc9d3-0060-4c64-8b79-7f6c85baf4f6').addClass('show')
+            $('#skipped-collapse-85fcc9d3-0060-4c64-8b79-7f6c85baf4f6').addClass('show')
+        $('#openAllSkipped').html("Collapse All Skipped Tests");
+        break;
+    case 2:
+            $('#skipped-006ac4fe-ea14-4ba1-832e-d47aa49d2dc9').addClass('collapsed')
+            $('#skipped-collapse-006ac4fe-ea14-4ba1-832e-d47aa49d2dc9').addClass('collapsed')
+            $('#skipped-006ac4fe-ea14-4ba1-832e-d47aa49d2dc9').removeClass('show')
+            $('#skipped-collapse-006ac4fe-ea14-4ba1-832e-d47aa49d2dc9').removeClass('show')
+            $('#skipped-2cea6445-e032-4925-924c-63387bbf3f63').addClass('collapsed')
+            $('#skipped-collapse-2cea6445-e032-4925-924c-63387bbf3f63').addClass('collapsed')
+            $('#skipped-2cea6445-e032-4925-924c-63387bbf3f63').removeClass('show')
+            $('#skipped-collapse-2cea6445-e032-4925-924c-63387bbf3f63').removeClass('show')
+            $('#skipped-e2ff3965-9b1f-4076-b00e-c5818c3ac1cb').addClass('collapsed')
+            $('#skipped-collapse-e2ff3965-9b1f-4076-b00e-c5818c3ac1cb').addClass('collapsed')
+            $('#skipped-e2ff3965-9b1f-4076-b00e-c5818c3ac1cb').removeClass('show')
+            $('#skipped-collapse-e2ff3965-9b1f-4076-b00e-c5818c3ac1cb').removeClass('show')
+            $('#skipped-5c1689f7-5314-436c-98ca-e2873301d377').addClass('collapsed')
+            $('#skipped-collapse-5c1689f7-5314-436c-98ca-e2873301d377').addClass('collapsed')
+            $('#skipped-5c1689f7-5314-436c-98ca-e2873301d377').removeClass('show')
+            $('#skipped-collapse-5c1689f7-5314-436c-98ca-e2873301d377').removeClass('show')
+            $('#skipped-1407f439-65ca-4a84-994a-c8e7f6c534e0').addClass('collapsed')
+            $('#skipped-collapse-1407f439-65ca-4a84-994a-c8e7f6c534e0').addClass('collapsed')
+            $('#skipped-1407f439-65ca-4a84-994a-c8e7f6c534e0').removeClass('show')
+            $('#skipped-collapse-1407f439-65ca-4a84-994a-c8e7f6c534e0').removeClass('show')
+            $('#skipped-d80a102b-620b-4399-9b58-42ed5924ee31').addClass('collapsed')
+            $('#skipped-collapse-d80a102b-620b-4399-9b58-42ed5924ee31').addClass('collapsed')
+            $('#skipped-d80a102b-620b-4399-9b58-42ed5924ee31').removeClass('show')
+            $('#skipped-collapse-d80a102b-620b-4399-9b58-42ed5924ee31').removeClass('show')
+            $('#skipped-ec0e6fc4-987a-4148-8d98-8c6713963063').addClass('collapsed')
+            $('#skipped-collapse-ec0e6fc4-987a-4148-8d98-8c6713963063').addClass('collapsed')
+            $('#skipped-ec0e6fc4-987a-4148-8d98-8c6713963063').removeClass('show')
+            $('#skipped-collapse-ec0e6fc4-987a-4148-8d98-8c6713963063').removeClass('show')
+            $('#skipped-3374908a-358d-4abb-97a2-25109b6e7ebb').addClass('collapsed')
+            $('#skipped-collapse-3374908a-358d-4abb-97a2-25109b6e7ebb').addClass('collapsed')
+            $('#skipped-3374908a-358d-4abb-97a2-25109b6e7ebb').removeClass('show')
+            $('#skipped-collapse-3374908a-358d-4abb-97a2-25109b6e7ebb').removeClass('show')
+            $('#skipped-a1639f4e-a973-42d4-8cba-9dc8fc226a03').addClass('collapsed')
+            $('#skipped-collapse-a1639f4e-a973-42d4-8cba-9dc8fc226a03').addClass('collapsed')
+            $('#skipped-a1639f4e-a973-42d4-8cba-9dc8fc226a03').removeClass('show')
+            $('#skipped-collapse-a1639f4e-a973-42d4-8cba-9dc8fc226a03').removeClass('show')
+            $('#skipped-15c0a7fb-60a7-42ae-9553-c95966b97a76').addClass('collapsed')
+            $('#skipped-collapse-15c0a7fb-60a7-42ae-9553-c95966b97a76').addClass('collapsed')
+            $('#skipped-15c0a7fb-60a7-42ae-9553-c95966b97a76').removeClass('show')
+            $('#skipped-collapse-15c0a7fb-60a7-42ae-9553-c95966b97a76').removeClass('show')
+            $('#skipped-ecefb86f-f6b8-4156-8f92-12f7e0154552').addClass('collapsed')
+            $('#skipped-collapse-ecefb86f-f6b8-4156-8f92-12f7e0154552').addClass('collapsed')
+            $('#skipped-ecefb86f-f6b8-4156-8f92-12f7e0154552').removeClass('show')
+            $('#skipped-collapse-ecefb86f-f6b8-4156-8f92-12f7e0154552').removeClass('show')
+            $('#skipped-b481dcb3-9d19-441d-a724-c528eb6ecb9c').addClass('collapsed')
+            $('#skipped-collapse-b481dcb3-9d19-441d-a724-c528eb6ecb9c').addClass('collapsed')
+            $('#skipped-b481dcb3-9d19-441d-a724-c528eb6ecb9c').removeClass('show')
+            $('#skipped-collapse-b481dcb3-9d19-441d-a724-c528eb6ecb9c').removeClass('show')
+            $('#skipped-6c2989da-5d99-47c7-b2e1-154fce0ab978').addClass('collapsed')
+            $('#skipped-collapse-6c2989da-5d99-47c7-b2e1-154fce0ab978').addClass('collapsed')
+            $('#skipped-6c2989da-5d99-47c7-b2e1-154fce0ab978').removeClass('show')
+            $('#skipped-collapse-6c2989da-5d99-47c7-b2e1-154fce0ab978').removeClass('show')
+            $('#skipped-b8f4b52c-d812-45e4-b50c-c18c7e6f3ccc').addClass('collapsed')
+            $('#skipped-collapse-b8f4b52c-d812-45e4-b50c-c18c7e6f3ccc').addClass('collapsed')
+            $('#skipped-b8f4b52c-d812-45e4-b50c-c18c7e6f3ccc').removeClass('show')
+            $('#skipped-collapse-b8f4b52c-d812-45e4-b50c-c18c7e6f3ccc').removeClass('show')
+            $('#skipped-153c7755-1435-440e-a13a-8cd571c0b762').addClass('collapsed')
+            $('#skipped-collapse-153c7755-1435-440e-a13a-8cd571c0b762').addClass('collapsed')
+            $('#skipped-153c7755-1435-440e-a13a-8cd571c0b762').removeClass('show')
+            $('#skipped-collapse-153c7755-1435-440e-a13a-8cd571c0b762').removeClass('show')
+            $('#skipped-1f20eae5-91b9-4914-891c-a2fb3e58253b').addClass('collapsed')
+            $('#skipped-collapse-1f20eae5-91b9-4914-891c-a2fb3e58253b').addClass('collapsed')
+            $('#skipped-1f20eae5-91b9-4914-891c-a2fb3e58253b').removeClass('show')
+            $('#skipped-collapse-1f20eae5-91b9-4914-891c-a2fb3e58253b').removeClass('show')
+            $('#skipped-dc1ed038-7b90-4553-b1ed-492e53a08975').addClass('collapsed')
+            $('#skipped-collapse-dc1ed038-7b90-4553-b1ed-492e53a08975').addClass('collapsed')
+            $('#skipped-dc1ed038-7b90-4553-b1ed-492e53a08975').removeClass('show')
+            $('#skipped-collapse-dc1ed038-7b90-4553-b1ed-492e53a08975').removeClass('show')
+            $('#skipped-8ebafe9e-7add-4e10-9278-515b48a7628a').addClass('collapsed')
+            $('#skipped-collapse-8ebafe9e-7add-4e10-9278-515b48a7628a').addClass('collapsed')
+            $('#skipped-8ebafe9e-7add-4e10-9278-515b48a7628a').removeClass('show')
+            $('#skipped-collapse-8ebafe9e-7add-4e10-9278-515b48a7628a').removeClass('show')
+            $('#skipped-6053eca1-848f-40e8-90ba-d7829c26e86d').addClass('collapsed')
+            $('#skipped-collapse-6053eca1-848f-40e8-90ba-d7829c26e86d').addClass('collapsed')
+            $('#skipped-6053eca1-848f-40e8-90ba-d7829c26e86d').removeClass('show')
+            $('#skipped-collapse-6053eca1-848f-40e8-90ba-d7829c26e86d').removeClass('show')
+            $('#skipped-6e24f905-ab27-4392-9503-29b8c0d5abca').addClass('collapsed')
+            $('#skipped-collapse-6e24f905-ab27-4392-9503-29b8c0d5abca').addClass('collapsed')
+            $('#skipped-6e24f905-ab27-4392-9503-29b8c0d5abca').removeClass('show')
+            $('#skipped-collapse-6e24f905-ab27-4392-9503-29b8c0d5abca').removeClass('show')
+            $('#skipped-161bd2d5-c21a-40a5-a55a-a621c2d7bf45').addClass('collapsed')
+            $('#skipped-collapse-161bd2d5-c21a-40a5-a55a-a621c2d7bf45').addClass('collapsed')
+            $('#skipped-161bd2d5-c21a-40a5-a55a-a621c2d7bf45').removeClass('show')
+            $('#skipped-collapse-161bd2d5-c21a-40a5-a55a-a621c2d7bf45').removeClass('show')
+            $('#skipped-76f85fd4-db0c-4b72-980f-455d22215295').addClass('collapsed')
+            $('#skipped-collapse-76f85fd4-db0c-4b72-980f-455d22215295').addClass('collapsed')
+            $('#skipped-76f85fd4-db0c-4b72-980f-455d22215295').removeClass('show')
+            $('#skipped-collapse-76f85fd4-db0c-4b72-980f-455d22215295').removeClass('show')
+            $('#skipped-d777973c-5824-4980-ba86-b1a0dae9f08b').addClass('collapsed')
+            $('#skipped-collapse-d777973c-5824-4980-ba86-b1a0dae9f08b').addClass('collapsed')
+            $('#skipped-d777973c-5824-4980-ba86-b1a0dae9f08b').removeClass('show')
+            $('#skipped-collapse-d777973c-5824-4980-ba86-b1a0dae9f08b').removeClass('show')
+            $('#skipped-f8db37dd-2819-4695-a70a-3376bef7a38a').addClass('collapsed')
+            $('#skipped-collapse-f8db37dd-2819-4695-a70a-3376bef7a38a').addClass('collapsed')
+            $('#skipped-f8db37dd-2819-4695-a70a-3376bef7a38a').removeClass('show')
+            $('#skipped-collapse-f8db37dd-2819-4695-a70a-3376bef7a38a').removeClass('show')
+            $('#skipped-b4a275fb-5228-4630-b384-2fef93bef4e4').addClass('collapsed')
+            $('#skipped-collapse-b4a275fb-5228-4630-b384-2fef93bef4e4').addClass('collapsed')
+            $('#skipped-b4a275fb-5228-4630-b384-2fef93bef4e4').removeClass('show')
+            $('#skipped-collapse-b4a275fb-5228-4630-b384-2fef93bef4e4').removeClass('show')
+            $('#skipped-62436abc-c24b-413c-b0a6-8655dffdac1d').addClass('collapsed')
+            $('#skipped-collapse-62436abc-c24b-413c-b0a6-8655dffdac1d').addClass('collapsed')
+            $('#skipped-62436abc-c24b-413c-b0a6-8655dffdac1d').removeClass('show')
+            $('#skipped-collapse-62436abc-c24b-413c-b0a6-8655dffdac1d').removeClass('show')
+            $('#skipped-07bbcbf7-2dfb-4c32-8a9f-23b13283c836').addClass('collapsed')
+            $('#skipped-collapse-07bbcbf7-2dfb-4c32-8a9f-23b13283c836').addClass('collapsed')
+            $('#skipped-07bbcbf7-2dfb-4c32-8a9f-23b13283c836').removeClass('show')
+            $('#skipped-collapse-07bbcbf7-2dfb-4c32-8a9f-23b13283c836').removeClass('show')
+            $('#skipped-c472fbec-066d-4a68-ae3a-26cfecdf782f').addClass('collapsed')
+            $('#skipped-collapse-c472fbec-066d-4a68-ae3a-26cfecdf782f').addClass('collapsed')
+            $('#skipped-c472fbec-066d-4a68-ae3a-26cfecdf782f').removeClass('show')
+            $('#skipped-collapse-c472fbec-066d-4a68-ae3a-26cfecdf782f').removeClass('show')
+            $('#skipped-7f040cf5-c7b5-4a40-a277-8e4839304325').addClass('collapsed')
+            $('#skipped-collapse-7f040cf5-c7b5-4a40-a277-8e4839304325').addClass('collapsed')
+            $('#skipped-7f040cf5-c7b5-4a40-a277-8e4839304325').removeClass('show')
+            $('#skipped-collapse-7f040cf5-c7b5-4a40-a277-8e4839304325').removeClass('show')
+            $('#skipped-7fa0487a-c416-4041-b8b2-123349352d01').addClass('collapsed')
+            $('#skipped-collapse-7fa0487a-c416-4041-b8b2-123349352d01').addClass('collapsed')
+            $('#skipped-7fa0487a-c416-4041-b8b2-123349352d01').removeClass('show')
+            $('#skipped-collapse-7fa0487a-c416-4041-b8b2-123349352d01').removeClass('show')
+            $('#skipped-0fa89d36-d5ab-485d-bfda-e54756c18a5e').addClass('collapsed')
+            $('#skipped-collapse-0fa89d36-d5ab-485d-bfda-e54756c18a5e').addClass('collapsed')
+            $('#skipped-0fa89d36-d5ab-485d-bfda-e54756c18a5e').removeClass('show')
+            $('#skipped-collapse-0fa89d36-d5ab-485d-bfda-e54756c18a5e').removeClass('show')
+            $('#skipped-f71ded0f-0c5f-4495-bcec-dd03e7ea125a').addClass('collapsed')
+            $('#skipped-collapse-f71ded0f-0c5f-4495-bcec-dd03e7ea125a').addClass('collapsed')
+            $('#skipped-f71ded0f-0c5f-4495-bcec-dd03e7ea125a').removeClass('show')
+            $('#skipped-collapse-f71ded0f-0c5f-4495-bcec-dd03e7ea125a').removeClass('show')
+            $('#skipped-7bb2bfb1-d429-4609-8159-f5119841c02f').addClass('collapsed')
+            $('#skipped-collapse-7bb2bfb1-d429-4609-8159-f5119841c02f').addClass('collapsed')
+            $('#skipped-7bb2bfb1-d429-4609-8159-f5119841c02f').removeClass('show')
+            $('#skipped-collapse-7bb2bfb1-d429-4609-8159-f5119841c02f').removeClass('show')
+            $('#skipped-42910891-78d7-42f9-9345-dcc2c88ec823').addClass('collapsed')
+            $('#skipped-collapse-42910891-78d7-42f9-9345-dcc2c88ec823').addClass('collapsed')
+            $('#skipped-42910891-78d7-42f9-9345-dcc2c88ec823').removeClass('show')
+            $('#skipped-collapse-42910891-78d7-42f9-9345-dcc2c88ec823').removeClass('show')
+            $('#skipped-1f5ef5a2-6a33-4dbf-baba-40bff8093119').addClass('collapsed')
+            $('#skipped-collapse-1f5ef5a2-6a33-4dbf-baba-40bff8093119').addClass('collapsed')
+            $('#skipped-1f5ef5a2-6a33-4dbf-baba-40bff8093119').removeClass('show')
+            $('#skipped-collapse-1f5ef5a2-6a33-4dbf-baba-40bff8093119').removeClass('show')
+            $('#skipped-3f12ba1a-a6e9-4faa-9676-25af7f2c2ddf').addClass('collapsed')
+            $('#skipped-collapse-3f12ba1a-a6e9-4faa-9676-25af7f2c2ddf').addClass('collapsed')
+            $('#skipped-3f12ba1a-a6e9-4faa-9676-25af7f2c2ddf').removeClass('show')
+            $('#skipped-collapse-3f12ba1a-a6e9-4faa-9676-25af7f2c2ddf').removeClass('show')
+            $('#skipped-4078b356-53a2-4df6-9e54-c867b31b2934').addClass('collapsed')
+            $('#skipped-collapse-4078b356-53a2-4df6-9e54-c867b31b2934').addClass('collapsed')
+            $('#skipped-4078b356-53a2-4df6-9e54-c867b31b2934').removeClass('show')
+            $('#skipped-collapse-4078b356-53a2-4df6-9e54-c867b31b2934').removeClass('show')
+            $('#skipped-e9ac216c-8e99-4eb9-afa4-0abcd7a99edf').addClass('collapsed')
+            $('#skipped-collapse-e9ac216c-8e99-4eb9-afa4-0abcd7a99edf').addClass('collapsed')
+            $('#skipped-e9ac216c-8e99-4eb9-afa4-0abcd7a99edf').removeClass('show')
+            $('#skipped-collapse-e9ac216c-8e99-4eb9-afa4-0abcd7a99edf').removeClass('show')
+            $('#skipped-52be58e9-1fa0-4c25-a2b2-989d6abfcdb1').addClass('collapsed')
+            $('#skipped-collapse-52be58e9-1fa0-4c25-a2b2-989d6abfcdb1').addClass('collapsed')
+            $('#skipped-52be58e9-1fa0-4c25-a2b2-989d6abfcdb1').removeClass('show')
+            $('#skipped-collapse-52be58e9-1fa0-4c25-a2b2-989d6abfcdb1').removeClass('show')
+            $('#skipped-a9ebd125-3d5f-4c83-9687-b41715512c2d').addClass('collapsed')
+            $('#skipped-collapse-a9ebd125-3d5f-4c83-9687-b41715512c2d').addClass('collapsed')
+            $('#skipped-a9ebd125-3d5f-4c83-9687-b41715512c2d').removeClass('show')
+            $('#skipped-collapse-a9ebd125-3d5f-4c83-9687-b41715512c2d').removeClass('show')
+            $('#skipped-504de2e7-17ce-45a7-8f1e-6e03beef5a81').addClass('collapsed')
+            $('#skipped-collapse-504de2e7-17ce-45a7-8f1e-6e03beef5a81').addClass('collapsed')
+            $('#skipped-504de2e7-17ce-45a7-8f1e-6e03beef5a81').removeClass('show')
+            $('#skipped-collapse-504de2e7-17ce-45a7-8f1e-6e03beef5a81').removeClass('show')
+            $('#skipped-7579edee-9aaa-4b61-a921-d13350035be2').addClass('collapsed')
+            $('#skipped-collapse-7579edee-9aaa-4b61-a921-d13350035be2').addClass('collapsed')
+            $('#skipped-7579edee-9aaa-4b61-a921-d13350035be2').removeClass('show')
+            $('#skipped-collapse-7579edee-9aaa-4b61-a921-d13350035be2').removeClass('show')
+            $('#skipped-ab0636b9-56c4-4f6f-9359-720367a44fd2').addClass('collapsed')
+            $('#skipped-collapse-ab0636b9-56c4-4f6f-9359-720367a44fd2').addClass('collapsed')
+            $('#skipped-ab0636b9-56c4-4f6f-9359-720367a44fd2').removeClass('show')
+            $('#skipped-collapse-ab0636b9-56c4-4f6f-9359-720367a44fd2').removeClass('show')
+            $('#skipped-85fcc9d3-0060-4c64-8b79-7f6c85baf4f6').addClass('collapsed')
+            $('#skipped-collapse-85fcc9d3-0060-4c64-8b79-7f6c85baf4f6').addClass('collapsed')
+            $('#skipped-85fcc9d3-0060-4c64-8b79-7f6c85baf4f6').removeClass('show')
+            $('#skipped-collapse-85fcc9d3-0060-4c64-8b79-7f6c85baf4f6').removeClass('show')
+        $('#openAllSkipped').html("Expand All Skipped Tests");
+        break;
+}
+clickCount = clickCount > 1 ? 1 : ++clickCount;
+$(this).data("clickCount", clickCount)
+})
+</script>
+
+<!-- Show/Hide The Failures -->
+
+<script>
+$('#openAllFailed').on('click', function(e) {
+let clickCount = $(this).data("clickCount") || 1
+let failedItemContent
+let failedItemHeading
+switch (clickCount){
+    case 1:
+            failedItemHeading = $('#fails-fa688e79-d2ae-4b3e-81ef-1e19dbf2d7ef');
+            failedItemContent = $("#fails-collapse-fa688e79-d2ae-4b3e-81ef-1e19dbf2d7ef");
+            failedItemHeading.removeClass('collapsed')
+            failedItemContent.removeClass('collapsed')
+            failedItemHeading.addClass('show')
+            failedItemContent.addClass('show')
+        $('#openAllFailed').html("Collapse All Failed Tests");
+        break;
+    case 2:
+            failedItemHeading = $('#fails-fa688e79-d2ae-4b3e-81ef-1e19dbf2d7ef');
+            failedItemContent = $("#fails-collapse-fa688e79-d2ae-4b3e-81ef-1e19dbf2d7ef");
+            failedItemHeading.removeClass('show')
+            failedItemContent.removeClass('show')
+            failedItemHeading.addClass('collapsed')
+            failedItemContent.addClass('collapsed')
+        $('#openAllFailed').html("Expand All Failed Tests");
+        break;
+}
+clickCount = clickCount > 1 ? 1 : ++clickCount;
+$(this).data("clickCount", clickCount)
+})
+</script>
+
+<!-- Show/Hide The Toggles When Scrolling The Page -->
+
+<script>
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    document.getElementById("topOfRequestsScreen").style.display = "block";
+    document.getElementById("topOfFailuresScreen").style.display = "block";
+    document.getElementById("topOfSkippedScreen").style.display = "block";
+    document.getElementById("openAllRequests").style.display = "none";
+
+    
+    document.getElementById("openAllFailed").style.display = "none";
+  } else {
+    document.getElementById("topOfRequestsScreen").style.display = "none";
+    document.getElementById("topOfFailuresScreen").style.display = "none";
+    document.getElementById("topOfSkippedScreen").style.display = "none";
+    document.getElementById("openAllRequests").style.display = "block";
+
+    document.getElementById("openAllFailed").style.display = "block";
+  }
+}
+
+function topFunction() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+</script>
+
+<!-- Creates The Iteration Tabs -->
+
+<script type="text/javascript">
+    "use strict";
+
+window.onload = function () {
+
+  // hides all blocks of response
+  var allItems = document.querySelectorAll('[class*=iteration-]');
+  allItems.forEach(function(elem){
+    elem.style.display = 'none';
+  });
+
+   
+  let totalIterations = 1;
+   
+
+  let menu = document.querySelector('#execution-menu .nav');
+
+  for(var i = 0; i < totalIterations; i++)
+  {
+    let li = document.createElement('li');
+    li.appendChild(document.createTextNode((i + 1)));
+    li.setAttribute('id', 'iteration-' + i);
+    li.classList.add("custom-tab");
+    li.classList.add("itPassed");
+
+    li.addEventListener('click', function() {
+
+      let allItems = document.querySelectorAll('[class*=iteration-]');
+      allItems.forEach(function(elem) {
+        elem.style.display = 'none';
+      })
+
+      let allMenus = document.querySelectorAll('[id*=iteration-]');
+      allMenus.forEach(function(elem){
+        elem.style.borderBottom = 'none';
+      })
+      
+      this.style.borderBottom = 'solid 3px #032a33';
+
+      let items = document.querySelectorAll("." + this.id);
+      items.forEach(function(elem) {
+        elem.style.display = elem.style.display == 'block' ? 'none' : 'block';
+      })
+    });
+
+    menu.appendChild(li);
+  }
+
+    //shows first tab data
+  document.getElementById('iteration-0').click();
+  document.getElementById('iterationSelected').innerHTML = `Iteration ${document.getElementById('iteration-0').innerHTML} selected`
+  
+    $("#iteration-0").removeClass('itPassed').addClass('itFailed')
+}
+</script>
+
+<!-- Create the Selected Iteration Label -->
+
+<script>
+$(document).ready(function(){
+    $(function() {
+        $("#iterationList li").click(function() {
+            document.getElementById('iterationSelected').innerHTML = "Iteration " + this.innerHTML + " selected"
+        });
+    });
+});
+</script>
+
+<!-- Filter Action for the Iterations -->
+
+<script>
+$(document).ready(function(){
+  $("#filterInput").on("input paste", function() {
+    var value = $(this).val();
+    $("#iterationList li").filter(function() {
+      $(this).toggle($(this).text().indexOf(value) > -1)
+    });
+  });
+});
+</script>
+
+<!-- Set The Theme Of The Report -->
+
+<script>
+function setTheme(themeName) {
+    localStorage.setItem('theme', themeName);
+    document.body.className = themeName;
+}
+
+function toggleTheme() {
+    if (localStorage.getItem('theme') === 'theme-light') {
+        setTheme('theme-dark');
+    } else {
+        setTheme('theme-light');
+    }
+}
+
+(function () {
+    if (localStorage.getItem('theme') === 'theme-light') {
+        setTheme('theme-light');
+        document.getElementById('slider').checked = false;
+    } else {
+        setTheme('theme-dark');
+        document.getElementById('slider').checked = true;
+    }
+})();
+</script>
